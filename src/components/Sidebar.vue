@@ -10,7 +10,7 @@
         <v-list density="compact" nav>
             <!-- Dashboard -->
             <v-list-item :to="{ name: 'dashboard' }" router link min-height="50"
-                class="!bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black" :ripple="false">
+                class="!bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black" :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />
@@ -22,7 +22,7 @@
             <!-- Users -->
             <v-list-item :to="{ name: 'user' }" router link min-height="50"
                 class="mt-2 !bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black"
-                :ripple="false">
+                :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />
@@ -34,7 +34,7 @@
             <!-- user audit -->
             <v-list-item :to="{ name: 'user-audit' }" router link min-height="50"
                 class="mt-2 !bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black"
-                :ripple="false">
+                :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />
