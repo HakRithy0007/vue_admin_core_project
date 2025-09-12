@@ -1,10 +1,9 @@
-/**
- * src/styles/settings.scss
- *
- * Configures SASS variables and Vuetify overwrites
- */
 
-// https://vuetifyjs.com/features/sass-variables/`
-// @use 'vuetify/settings' with (
-//   $color-pack: false
-// );
+// src/styles/settings.scss
+// Example: define your global variables, colors, etc.
+
+$primary-color: #1976d2;
+$secondary-color: #ff4081;
+$font-stack: 'Roboto', sans-serif;
+
+// Add mixins or other variables here

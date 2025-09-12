@@ -1,4 +1,5 @@
 <template>
+
     <v-navigation-drawer :model-value="drawer" location="left" :permanent="false" app
         @update:model-value="val => emit('update:drawer', val)">
         <template v-slot:prepend>
@@ -8,9 +9,10 @@
         </template>
 
         <v-list density="compact" nav>
+
             <!-- Dashboard -->
-            <v-list-item :to="{ name: 'dashboard' }" router link min-height="50"
-                class="!bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black" :ripple="true">
+            <v-list-item :to="{ name: 'dashboard' }" router link min-height="50" class="!text-white rounded-md"
+                active-class="!bg-pink-500 !text-black" :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />
@@ -20,9 +22,8 @@
             </v-list-item>
 
             <!-- Users -->
-            <v-list-item :to="{ name: 'user' }" router link min-height="50"
-                class="mt-2 !bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black"
-                :ripple="true">
+            <v-list-item :to="{ name: 'user' }" router link min-height="50" class="mt-2 !text-white rounded-md"
+                active-class="!bg-pink-500 !text-black" :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />
@@ -32,9 +33,8 @@
             </v-list-item>
 
             <!-- user audit -->
-            <v-list-item :to="{ name: 'user-audit' }" router link min-height="50"
-                class="mt-2 !bg-[#323232] !text-white rounded-md" active-class="!bg-pink-500 !text-black"
-                :ripple="true">
+            <v-list-item :to="{ name: 'user-audit' }" router link min-height="50" class="mt-2 !text-white rounded-md"
+                active-class="!bg-pink-500 !text-black" :ripple="true">
                 <div class="flex justify-center items-center px-6">
                     <span>
                         <Icon icon="ri:dashboard-horizontal-fill" width="24" height="24" />

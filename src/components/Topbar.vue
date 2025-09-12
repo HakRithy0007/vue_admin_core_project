@@ -1,22 +1,24 @@
 <template>
     <div class="h-[60px] px-2 border-b flex justify-between items-center">
-        <!-- Left -->
+
+        <!-- SIDEBAR BUTTON DRAWER -->
         <div class="left-content flex justify-center items-center h-full">
-            <v-btn height="50px" color="primary" @click="$emit('toggle-drawer')">
-                <Icon v-if="drawer" icon="line-md:close" width="30" height="30" />
-                <Icon v-else icon="gg:menu-grid-r" width="30" height="30" />
+            <v-btn class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333] !shadow-md"
+                @click="$emit('toggle-drawer')">
+                <Icon v-if="drawer" icon="line-md:close" width="20" height="20" />
+                <Icon v-else icon="gg:menu-grid-r" width="20" height="20" />
             </v-btn>
         </div>
 
         <!-- Right -->
-        <div class="right-content flex justify-center items-center gap-1">
+        <div class="right-content flex justify-center items-center gap-2">
 
             <!-- Real-time clock -->
             <div class="time flex justify-center items-center gap-2">
                 <span class="time-icon">
                     <Icon icon="noto:alarm-clock" width="24" height="24" />
                 </span>
-                <span v-if="!smAndDown" class="text-white font-medium mr-2">
+                <span class="text-white font-medium mr-2">
                     {{ currentTime }}
                 </span>
 
@@ -25,9 +27,9 @@
             <!-- Notification button dialog -->
             <v-dialog max-width="500" transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props: activatorProps }">
-                    <v-btn height="50px" color="teal" v-bind="activatorProps" variant="flat"
-                        class="rounded-full shadow-md">
-                        <Icon icon="famicons:notifications-sharp" width="28" height="28" />
+                    <v-btn variant="tonal" v-bind="activatorProps"
+                        class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333] !shadow-md">
+                        <Icon icon="famicons:notifications-sharp" width="20" height="20" />
                     </v-btn>
                 </template>
 
@@ -39,7 +41,7 @@
                             <div class="title-notification flex justify-between items-center">
                                 <span class="">NOTIFICATIONS</span>
                                 <span class="">
-                                    <v-btn icon variant="text" size="small" @click="isActive.value = false">
+                                    <v-btn variant="tonal" size="small" @click="isActive.value = false">
                                         <Icon icon="mdi:close" width="20" height="20" />
                                     </v-btn>
                                 </span>
@@ -47,7 +49,7 @@
                         </v-card-title>
 
                         <!-- Notifications List -->
-                        <v-card-text class="max-h-[500px] overflow-y-auto space-y-3">
+                        <v-card-text class="max-h-[500px] overflow-y-auto space-y-3 hidden-scrollbar">
                             <v-alert v-for="(n, index) in notifications" :key="index" :type="n.type"
                                 density="comfortable" class="rounded-md shadow-sm my-2">
                                 <div class="font-medium">{{ n.title }}</div>
@@ -65,17 +67,20 @@
             </v-dialog>
 
             <!-- Fullscreen button -->
-            <v-btn v-show="!smAndDown" height="50px" color="teal" @click="toggleFullscreen">
-                <Icon v-if="!isFullscreen" icon="ix:full-screen" width="30" height="30" />
-                <Icon v-else icon="material-symbols:fullscreen-exit" width="30" height="30" />
+            <v-btn v-show="!smAndDown"
+                class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333] !shadow-md"
+                variant="tonal" @click="toggleFullscreen">
+                <Icon v-if="!isFullscreen" icon="ix:full-screen" width="20" height="20" />
+                <Icon v-else icon="material-symbols:fullscreen-exit" width="20" height="20" />
             </v-btn>
 
             <!-- World button dialog -->
             <v-dialog max-width="400" transition="dialog-bottom-transition">
                 <!-- Activator Button -->
                 <template v-slot:activator="{ props: activatorProps }">
-                    <v-btn height="50px" color="teal" v-bind="activatorProps">
-                        <Icon icon="subway:world" width="30" height="30" />
+                    <v-btn class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333] !shadow-md"
+                        variant="tonal" v-bind="activatorProps">
+                        <Icon icon="subway:world" width="20" height="20" />
                     </v-btn>
                 </template>
 
@@ -108,10 +113,12 @@
             </v-dialog>
 
             <!-- Avatar button dialog -->
-            <v-dialog max-width="500">
+            <v-dialog max-width="500" transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props: activatorProps }">
-                    <v-btn height="50px" color="teal" v-bind="activatorProps">
-                        <v-avatar color="surface-variant" size="45">
+                    <v-btn class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333] !shadow-md"
+                        variant="tonal" v-bind="activatorProps">
+                        <v-avatar color="surface-variant"
+                            class="!min-w-[40px] !w-[40px] !min-h-[40px] !h-[40px] !rounded-lg !bg-[#333]">
                             <img src="/src/assets/images/users/user1.webp" alt="user avatar" />
                         </v-avatar>
                     </v-btn>
@@ -129,7 +136,6 @@
                     </v-card>
                 </template>
             </v-dialog>
-
         </div>
     </div>
 </template>
@@ -193,3 +199,4 @@ onBeforeUnmount(() => {
     clearInterval(intervalId)
 })
 </script>
+
