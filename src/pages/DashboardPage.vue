@@ -1,51 +1,84 @@
 <template>
-    <div class="w-full h-full">
-        <div class="w-full h-full flex flex-col">
+  <VRow class="match-height">
 
-            <!-- Header -->
-            <div class="header-box h-[25%] w-full flex justify-center items-center gap-2 py-2">
-                <div class="w-[25%] h-full content-one">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">1</div>
-                </div>
-                <div class="w-[25%] h-full content-two">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">2</div>
-                </div>
-                <div class="w-[25%] h-full content-three">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">3</div>
-                </div>
-                <div class="w-[25%] h-full content-four">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">4</div>
-                </div>
-            </div>
+    <VProgressLinear indeterminate color="primary" />
+    <VCol cols="12" md="4">
+      <AnalyticsAward />
+    </VCol>
 
-            <!-- Center -->
-            <div class="center-box h-[50%] w-full">
-                <div class="w-full h-full content-one">
-                    <div class="w-full h-full flex justify-center items-center rounded-md bg-[#303030]">center</div>
-                </div>
-            </div>
+    <VCol cols="12" md="8">
+      <AnalyticsTransactions />
+    </VCol>
 
-            <!-- Footer -->
-            <div class="footer-box h-[25%] w-full flex justify-center items-center gap-2 py-2">
-                <div class="w-[25%] h-full content-one">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">1</div>
-                </div>
-                <div class="w-[25%] h-full content-two">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">2</div>
-                </div>
-                <div class="w-[25%] h-full content-three">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">3</div>
-                </div>
-                <div class="w-[25%] h-full content-four">
-                    <div class="w-full flex justify-center items-center h-full rounded-md bg-[#303030]">4</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <VCol cols="12" md="4">
+      <AnalyticsWeeklyOverview />
+    </VCol>
+
+    <VCol cols="12" md="4">
+      <AnalyticsTotalEarning />
+    </VCol>
+
+    <VCol cols="12" md="4">
+      <VRow class="match-height">
+        <VCol cols="12" sm="6">
+          <AnalyticsTotalProfitLineCharts />
+        </VCol>
+
+        <VCol cols="12" sm="6">
+          <CardStatisticsVertical v-bind="totalProfit" />
+        </VCol>
+
+        <VCol cols="12" sm="6">
+          <CardStatisticsVertical v-bind="newProject" />
+        </VCol>
+
+        <VCol cols="12" sm="6">
+          <AnalyticsBarCharts />
+        </VCol>
+      </VRow>
+    </VCol>
+
+    <VCol cols="12" md="4">
+      <AnalyticsSalesByCountries />
+    </VCol>
+
+    <VCol cols="12" md="8">
+      <AnalyticsDepositWithdraw />
+    </VCol>
+
+    <VCol cols="12">
+      <AnalyticsUserTable />
+    </VCol>
+  </VRow>
 </template>
 
 <script setup lang="ts">
+import AnalyticsAward from '@/views/dashboard/AnalyticsAward.vue'
+import AnalyticsBarCharts from '@/views/dashboard/AnalyticsBarCharts.vue'
+import AnalyticsDepositWithdraw from '@/views/dashboard/AnalyticsDepositWithdraw.vue'
+import AnalyticsSalesByCountries from '@/views/dashboard/AnalyticsSalesByCountries.vue'
+import AnalyticsTotalEarning from '@/views/dashboard/AnalyticsTotalEarning.vue'
+import AnalyticsTotalProfitLineCharts from '@/views/dashboard/AnalyticsTotalProfitLineCharts.vue'
+import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
+import AnalyticsUserTable from '@/views/dashboard/AnalyticsMemberTable.vue'
+import AnalyticsWeeklyOverview from '@/views/dashboard/AnalyticsWeeklyOverview.vue'
+import CardStatisticsVertical from '@/@core/components/cards/CardStatisticsVertical.vue'
 
+const totalProfit = {
+  title: 'Total Profit',
+  color: 'secondary',
+  icon: 'ri-pie-chart-2-line',
+  stats: '$25.6k',
+  change: 42,
+  subtitle: 'Weekly Project',
+}
+
+const newProject = {
+  title: 'New Project',
+  color: 'primary',
+  icon: 'ri-file-word-2-line',
+  stats: '862',
+  change: -18,
+  subtitle: 'Yearly Project',
+}
 </script>
-
-<style scoped></style>

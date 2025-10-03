@@ -1,68 +1,75 @@
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import { fileURLToPath } from "node:url";
+import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
-import Vue from "@vitejs/plugin-vue";
-import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
-import Fonts from "unplugin-fonts/vite";
-import VueRouter from "unplugin-vue-router/vite";
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import { fileURLToPath, URL } from "node:url";
+import vuetify from "vite-plugin-vuetify";
+import svgLoader from "vite-svg-loader";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
-    VueRouter({
-      dts: "src/typed-router.d.ts",
-    }),
-    Vue({
-      template: { transformAssetUrls },
-    }),
-    Vuetify({
-      autoImport: true,
+    vue(),
+    vueJsx(),
+    tailwindcss(),
+    vuetify({
       styles: {
-        configFile: "src/styles/settings.scss",
+        configFile: "src/assets/styles/variables/_vuetify.scss",
       },
     }),
     Components({
-      dts: "src/components.d.ts",
+      dirs: ["src/@core/components", "src/components"],
+      dts: true,
+      resolvers: [
+        (componentName) => {
+          if (componentName === "VueApexCharts")
+            return {
+              name: "default",
+              from: "vue3-apexcharts",
+              as: "VueApexCharts",
+            };
+        },
+      ],
     }),
-    Fonts({
-      fontsource: {
-        families: [
-          {
-            name: "Roboto",
-            weights: [100, 300, 400, 500, 700, 900],
-            styles: ["normal", "italic"],
-          },
-        ],
-      },
+
+    AutoImport({
+      imports: ["vue", "vue-router", "@vueuse/core", "@vueuse/math", "pinia"],
+      vueTemplate: true,
+      ignore: ["useCookies", "useStorage"],
     }),
-    tailwindcss(),
+    svgLoader(),
   ],
-  optimizeDeps: {
-    exclude: [
-      "vuetify",
-      "vue-router",
-      "unplugin-vue-router/runtime",
-      "unplugin-vue-router/data-loaders",
-      "unplugin-vue-router/data-loaders/basic",
-    ],
-  },
   define: { "process.env": {} },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("src", import.meta.url)),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@core": fileURLToPath(new URL("./src/@core", import.meta.url)),
+      "@layouts": fileURLToPath(new URL("./src/@layouts", import.meta.url)),
+      "@images": fileURLToPath(
+        new URL("./src/assets/images/", import.meta.url)
+      ),
+      "@styles": fileURLToPath(
+        new URL("./src/assets/styles/", import.meta.url)
+      ),
     },
-    extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
+  },
+  build: {
+    chunkSizeWarningLimit: 5000,
+  },
+  optimizeDeps: {
+    exclude: ["vuetify"],
+    entries: ["./src/**/*.vue"],
   },
   server: {
-    port: 3000,
+    port: 9834,
+    host: true,
+    strictPort: true,
   },
   css: {
     preprocessorOptions: {
-      sass: {
-        api: "modern-compiler",
-      },
       scss: {
-        api: "modern-compiler",
+        silenceDeprecations: ["mixed-decls"],
       },
     },
   },

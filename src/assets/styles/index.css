@@ -1,11 +1,62 @@
 @import "tailwindcss";
 
-.hidden-scrollbar {
-  overflow: auto; 
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+
+html[lang="en"] {
+  font-family: 'Poppins', sans-serif;
 }
 
-.hidden-scrollbar::-webkit-scrollbar {
-  display: none;
+html[lang="km"] {
+  font-family: 'Noto Serif Khmer', serif;
+}
+
+
+/* Battambang */
+@font-face {
+  font-family: "Battambang";
+  src: url("/src/assets/font/Battambang-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+.battambang{
+  font-family: "Battambang", system-ui;
+}
+
+/* Poppins */
+@font-face {
+  font-family: "Poppins";
+  src: url("@/assets/font/Poppins-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+.poppins{
+  font-family: "Poppins", sans-serif;
+}
+
+/* Koulen */
+@font-face {
+  font-family: "Koulen";
+  src: url("/src/assets/font/Koulen-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+.koulen{
+  font-family: "Koulen", sans-serif;
+}
+
+/* Noto Serif Khmer */
+@font-face {
+  font-family: "Noto Serif Khmer";
+  src: url("/src/assets//font/NotoSerifKhmer_Condensed-Black.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto Serif Khmer";
+  src: url("/src/assets//font/NotoSerifKhmer_Condensed-Black.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-khmer {
+  font-family: "Noto Serif Khmer", serif;
 }
