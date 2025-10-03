@@ -7,12 +7,12 @@
     </VCol>
 
     <VCol cols="12">
-      <UserTable />
+      <MemberTable />
     </VCol>
   </VRow>
 </template>
 
 <script setup lang="ts">
-import UserTable from '@/views/users/UserTable.vue'
+import MemberTable from '@/views/member/MemberTable.vue';
 import TopContentMember from '@/views/member/TopContentMember.vue';
 </script>

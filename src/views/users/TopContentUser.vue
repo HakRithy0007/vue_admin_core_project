@@ -4,12 +4,12 @@
             <VCard class="position-relative w-full h-full">
                 <VCardText class="p-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-[18px]">
+                        <span class="text-[24px]">
                             {{ t(item.title) }}
                         </span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <h4 class="text-[18px] text-primary" :class="item.textClass">
+                        <h4 class="text-[24px] text-primary" :class="item.textClass">
                             {{ item.count }}
                         </h4>
                         <VAvatar :color="item.color" :variant="item.variant" rounded size="50" class="elevation-4">
@@ -17,7 +17,7 @@
                         </VAvatar>
                     </div>
 
-                    <h4 class="text-[14px]" :class="item.subtitleClass">
+                    <h4 class="text-[16px]" :class="item.subtitleClass">
                         {{ t(item.subtitle) }}
                     </h4>
                 </VCardText>
@@ -55,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
             subtitle: 'USER',
             icon: 'ri-group-line',
             color: 'success',
+            textClass: 'font-bold',
             variant: 'tonal',
         },
         {
@@ -73,6 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
             subtitle: 'MODERATOR',
             icon: 'ri-group-line',
             color: 'error',
+            textClass: 'font-bold',
             variant: 'tonal',
         },
         {
@@ -81,6 +83,7 @@ const props = withDefaults(defineProps<Props>(), {
             subtitle: 'OPERATOR',
             icon: 'ri-group-line',
             color: 'warning',
+            textClass: 'font-bold',
             variant: 'tonal',
         }
     ]

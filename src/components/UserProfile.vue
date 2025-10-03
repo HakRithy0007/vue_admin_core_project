@@ -1,15 +1,31 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import { useI18n } from "vue-i18n"
 import avatar1 from "@images/avatars/avatar-1.png"
 
 const logoutDialog = ref(false)
 const profileDialog = ref(false)
+const changePass = ref(false)
 const router = useRouter()
+const { t } = useI18n()
+const username = ref("John Doe")
+const role = ref("Admin")
+const phone = ref("")
+const currentPassword = ref("")
+const newPassword = ref("")
+const confirmPassword = ref("")
 
 function handleLogout() {
   logoutDialog.value = false
-  router.push("/login") // logout logic
+  router.push("/login")
+}
+
+function handleChangePassword() {
+  currentPassword.value = ""
+  newPassword.value = ""
+  confirmPassword.value = ""
+  changePass.value = false
 }
 </script>
 
@@ -36,7 +52,7 @@ function handleLogout() {
             <VListItemTitle class="font-weight-semibold">
               John Doe
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>{{ t("ROLE_ADMIN") }}</VListItemSubtitle>
           </VListItem>
           <VDivider class="my-2" />
 
@@ -45,18 +61,28 @@ function handleLogout() {
             <template #prepend>
               <VIcon class="me-2" icon="ri-user-line" size="22" />
             </template>
-            <VListItemTitle>Profile</VListItemTitle>
+            <VListItemTitle>{{ t("PROFILE") }}</VListItemTitle>
           </VListItem>
 
+          <VDivider class="my-2" />
+
+          <!-- 👉 Change Password -->
+          <VListItem link @click="changePass = true">
+            <template #prepend>
+              <VIcon class="me-2" icon="ri-lock-line" size="22" />
+            </template>
+            <VListItemTitle>{{ t("CHANGEPASS") }}</VListItemTitle>
+          </VListItem>
 
           <VDivider class="my-2" />
+
 
           <!-- 👉 Logout -->
           <VListItem @click="logoutDialog = true">
             <template #prepend>
               <VIcon class="me-2" icon="ri-logout-box-r-line" size="22" />
             </template>
-            <VListItemTitle>Logout</VListItemTitle>
+            <VListItemTitle>{{ t("LOGOUT") }}</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>
@@ -65,27 +91,92 @@ function handleLogout() {
   </VBadge>
 
   <!-- 👉 Profile Dialog -->
-  <v-dialog v-model="profileDialog" max-width="400" opacity="0.7">
+  <v-dialog v-model="profileDialog" max-width="500" opacity="0.7">
     <v-card>
-      <v-card-title class="text-h6 py-2">
-        <span class="flex justify-center items-center poppins">
-          Profile
+      <v-card-title class="text-[18px] py-4">
+        <span class="flex justify-center items-center">
+          {{ t("PROFILE") }}
         </span>
       </v-card-title>
 
       <VDivider />
 
-      <v-card-text>
-        <span class="flex justify-center items-center pt-4 gap-2">
-          <span class="poppins">This is a simple settings dialog</span>
+      <v-card-text class="pt-6 pb-4">
+        <div class="flex flex-col gap-4">
+          <!-- Username -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("USERNAME") }}</label>
+            <v-text-field v-model="username" variant="outlined" density="comfortable" readonly
+              bg-color="grey-lighten-4" />
+          </div>
+
+          <!-- Role -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("ROLE") }}</label>
+            <v-text-field v-model="role" variant="outlined" density="comfortable" readonly bg-color="grey-lighten-4" />
+          </div>
+
+          <!-- Phone -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("PHONE") }}</label>
+            <v-text-field v-model="phone" variant="outlined" density="comfortable" readonly bg-color="grey-lighten-4" />
+          </div>
+        </div>
+      </v-card-text>
+
+      <v-card-actions class="pa-2 flex justify-center items-center">
+        <v-btn variant="outlined" color="primary" class="!border-2 !w-[100px]" @click="profileDialog = false">
+          {{ t("CLOSE") }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <!-- 👉 Change Password Dialog -->
+  <v-dialog v-model="changePass" max-width="500" opacity="0.7">
+    <v-card>
+      <v-card-title class="text-[18px] py-4">
+        <span class="flex justify-center items-center">
+          {{ t("CHANGEPASS") }}
         </span>
+      </v-card-title>
+
+      <VDivider />
+
+      <v-card-text class="pt-6 pb-4">
+        <div class="flex flex-col gap-4">
+          <!-- Current Password -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("CURRENT_PASSWORD") }}</label>
+            <v-text-field v-model="currentPassword" type="password" variant="outlined" density="comfortable"
+              :placeholder="t('ENTER_CURRENT_PASSWORD')" />
+          </div>
+
+          <!-- New Password -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("NEW_PASSWORD") }}</label>
+            <v-text-field v-model="newPassword" type="password" variant="outlined" density="comfortable"
+              :placeholder="t('ENTER_NEW_PASSWORD')" />
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold">{{ t("CONFIRM_PASSWORD") }}</label>
+            <v-text-field v-model="confirmPassword" type="password" variant="outlined" density="comfortable"
+              :placeholder="t('ENTER_CONFIRM_PASSWORD')" />
+          </div>
+        </div>
       </v-card-text>
 
       <VDivider />
 
-      <v-card-actions class="pa-2 flex justify-center items-center">
-        <v-btn variant="outlined" color="primary" class="poppins !border-2 !w-[80px]" text="CLOSE"
-          @click="profileDialog = false" />
+      <v-card-actions class="pa-4 flex justify-center items-center gap-2">
+        <v-btn variant="outlined" color="error" class="!border-2 !w-[100px]" @click="changePass = false">
+          {{ t("CANCEL") }}
+        </v-btn>
+        <v-btn variant="outlined" color="success" class="!border-2 !w-[100px]" @click="handleChangePassword">
+          {{ t("SAVE") }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -93,9 +184,9 @@ function handleLogout() {
   <!-- 👉 Logout Dialog -->
   <v-dialog v-model="logoutDialog" max-width="400" opacity="0.7">
     <v-card>
-      <v-card-title class="text-h6 py-2">
-        <span class="flex justify-center items-center poppins">
-          Confirm Logout
+      <v-card-title class="text-[16px] py-2">
+        <span class="flex justify-center items-center">
+          {{ t("CONFIRM_LOGOUT") }}
         </span>
       </v-card-title>
 
@@ -103,17 +194,19 @@ function handleLogout() {
 
       <v-card-text>
         <span class="flex justify-center items-center pt-4 gap-2">
-          <span class="poppins">Are you sure you want to log out?</span>
+          <span>{{ t("ARE_YOU_SURE_LOGOUT") }}</span>
         </span>
       </v-card-text>
 
       <VDivider />
 
-      <v-card-actions class="pa-2 flex justify-center items-center">
-        <v-btn variant="outlined" color="primary" class="poppins !border-2 !w-[80px]" text="CANCEL"
-          @click="logoutDialog = false" />
-        <v-btn variant="outlined" color="success" class="poppins !border-2 !w-[80px]" text="LOGOUT"
-          @click="handleLogout" />
+      <v-card-actions class="pa-2 flex justify-center items-center gap-2">
+        <v-btn variant="outlined" color="error" class="!border-2 !w-[80px]" @click="logoutDialog = false">
+          {{ t("CANCEL") }}
+        </v-btn>
+        <v-btn variant="outlined" color="info" class="!border-2 !w-[80px]" @click="handleLogout">
+          {{ t("LOGOUT") }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

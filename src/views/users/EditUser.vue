@@ -4,7 +4,7 @@
         <VCard>
             <!-- Dialog Header -->
             <VCardTitle class="flex justify-center items-center">
-                <span class="text-h5 poppins flex justify-center items-center py-2">Edit User</span>
+                <span class="text-[20px] flex justify-center items-center py-2">{{ t('EDIT_USER') }}</span>
             </VCardTitle>
 
             <VDivider />
@@ -13,41 +13,42 @@
             <VCardText class="pa-6">
                 <VForm @submit.prevent="handleSave">
                     <VRow>
-
+                        <!-- First Name -->
                         <VCol cols="12" md="6">
-                            <VTextField v-model="formData.firstname" label="First Name" prepend-inner-icon="mdi:account"
-                                variant="outlined" density="comfortable" class="poppins" required />
+                            <VTextField v-model="formData.firstname" :label="t('FIRST_NAME')"
+                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable" required />
                         </VCol>
-                        <!-- Full Name -->
+
+                        <!-- Last Name -->
                         <VCol cols="12" md="6">
-                            <VTextField v-model="formData.lastname" label="Last Name" prepend-inner-icon="mdi:account"
-                                variant="outlined" density="comfortable" class="poppins" required />
+                            <VTextField v-model="formData.lastname" :label="t('LAST_NAME')"
+                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable" required />
                         </VCol>
 
                         <!-- Username -->
                         <VCol cols="12" md="6">
-                            <VTextField v-model="formData.membername" label="Username" prepend-inner-icon="mdi:at"
-                                variant="outlined" density="comfortable" class="poppins" required />
+                            <VTextField v-model="formData.membername" :label="t('USERNAME')" prepend-inner-icon="mdi:at"
+                                variant="outlined" density="comfortable" required />
                         </VCol>
 
                         <!-- Phone -->
                         <VCol cols="12" md="6">
-                            <VTextField v-model="formData.phone" label="Phone" prepend-inner-icon="mdi:phone"
-                                variant="outlined" density="comfortable" class="poppins" required />
+                            <VTextField v-model="formData.phone" :label="t('PHONE')" prepend-inner-icon="mdi:phone"
+                                variant="outlined" density="comfortable" required />
                         </VCol>
 
                         <!-- Role -->
                         <VCol cols="12" md="6">
                             <VSelect v-model="formData.role" :items="roleOptions" item-title="title" item-value="value"
-                                label="Role" prepend-inner-icon="mdi:account-group" variant="outlined"
-                                density="comfortable" class="poppins" required />
+                                :label="t('ROLE')" prepend-inner-icon="mdi:account-group" variant="outlined"
+                                density="comfortable" required />
                         </VCol>
 
                         <!-- Status -->
                         <VCol cols="12" md="6">
                             <VSelect v-model="formData.status" :items="statusOptions" item-title="title"
-                                item-value="value" label="Status" prepend-inner-icon="mdi:package-variant"
-                                variant="outlined" density="comfortable" class="poppins" required />
+                                item-value="value" :label="t('STATUS')" prepend-inner-icon="mdi:package-variant"
+                                variant="outlined" density="comfortable" required />
                         </VCol>
                     </VRow>
                 </VForm>
@@ -58,20 +59,23 @@
             <!-- Dialog Actions -->
             <VCardActions class="pa-4">
                 <VSpacer />
-                <VBtn variant="outlined" color="primary" @click="handleCancel" class="poppins !w-20 !border-2">
-                    CANCEL
+                <VBtn variant="outlined" color="error" @click="handleCancel" class="!w-20 !border-2">
+                    {{ t('CANCEL') }}
                 </VBtn>
-                <VBtn variant="outlined" color="success" @click="handleSave" class="poppins ml-2 !w-20 !border-2">
-                    SAVE
+                <VBtn variant="outlined" color="info" @click="handleSave" class="ml-2 !w-20 !border-2">
+                    {{ t('SAVE') }}
                 </VBtn>
             </VCardActions>
         </VCard>
     </VDialog>
 </template>
 
+
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 interface User {
     id: number
     firstname: string
@@ -98,27 +102,27 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const roleOptions = [
-    { title: 'Admin', value: 'Admin' },
-    { title: 'Moderator', value: 'Moderator' },
-    { title: 'Operator', value: 'Operator' },
-]
+const roleOptions = computed(() => [
+    { title: t('ADMIN'), value: 'Admin' },
+    { title: t('MODERATOR'), value: 'Moderator' },
+    { title: t('OPERATOR'), value: 'Operator' },
+])
 
-const statusOptions = [
-    { title: 'Active', value: 'active' },
-    { title: 'Inactive', value: 'inactive' },
-    { title: 'Pending', value: 'pending' },
-]
+const statusOptions = computed(() => [
+    { title: t('ACTIVE'), value: 'active' },
+    { title: t('INACTIVE'), value: 'inactive' },
+    { title: t('PENDING'), value: 'pending' },
+])
 
 const defaultUser = (): User => ({
     id: 0,
     firstname: '',
     lastname: '',
     email: '',
-    role: roleOptions[0].value,
+    role: roleOptions.value[0].value,
     membername: '',
     phone: '',
-    status: statusOptions[0].value
+    status: statusOptions.value[0].value
 })
 
 const formData = ref<User>(defaultUser())
@@ -145,8 +149,8 @@ watch(
         if (newUser) {
             formData.value = {
                 ...newUser,
-                role: normalizeValue(roleOptions, newUser.role),
-                status: normalizeValue(statusOptions, newUser.status)
+                role: normalizeValue(roleOptions.value, newUser.role),
+                status: normalizeValue(statusOptions.value, newUser.status)
             }
         } else {
             formData.value = defaultUser()
@@ -154,6 +158,7 @@ watch(
     },
     { immediate: true }
 )
+
 
 watch(
     () => dialogModel.value,

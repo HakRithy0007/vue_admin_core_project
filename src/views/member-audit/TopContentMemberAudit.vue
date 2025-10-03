@@ -4,12 +4,15 @@
             <VCard class="position-relative w-full h-full">
                 <VCardText class="p-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-h4 poppins">
-                            {{ item.title }}
+                        <!-- Title -->
+                        <span class="text-[24px]">
+                            {{ t(item.title) }}
                         </span>
                     </div>
+
                     <div class="flex justify-between items-center">
-                        <h4 class="text-h3 text-primary poppins" :class="item.textClass">
+                        <!-- Count -->
+                        <h4 class="text-[24px] text-primary" :class="item.textClass">
                             {{ item.count }}
                         </h4>
                         <VAvatar :color="item.color" :variant="item.variant" rounded size="50" class="elevation-2">
@@ -17,8 +20,9 @@
                         </VAvatar>
                     </div>
 
-                    <h4 class="text-h6 poppins" :class="item.subtitleClass">
-                        {{ item.subtitle }}
+                    <!-- Subtitle -->
+                    <h4 class="text-[16px]" :class="item.subtitleClass">
+                        {{ t(item.subtitle) }}
                     </h4>
                 </VCardText>
             </VCard>
@@ -27,6 +31,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 interface StatsItem {
     title: string
     count: number | string
@@ -42,21 +49,20 @@ interface Props {
     statsData?: StatsItem[]
 }
 
-// Define props with default data
 const props = withDefaults(defineProps<Props>(), {
     statsData: () => [
         {
-            title: 'Total',
+            title: 'TOTAL',
             count: 42,
-            subtitle: 'Total Member Audit log',
+            subtitle: 'TOTAL_MEMBER_AUDIT',
             icon: 'ri-group-line',
             color: 'success',
             variant: 'tonal',
         },
         {
-            title: 'Login',
+            title: 'LOGIN',
             count: 42,
-            subtitle: 'Role Administrator',
+            subtitle: 'ROLE_ADMIN',
             icon: 'ri-group-line',
             color: 'info',
             variant: 'tonal',
@@ -64,23 +70,24 @@ const props = withDefaults(defineProps<Props>(), {
             subtitleClass: 'opacity-80'
         },
         {
-            title: 'Total Moderator',
+            title: 'TOTAL_MODERATOR',
             count: 42,
-            subtitle: 'Moderator',
+            subtitle: 'MODERATOR',
             icon: 'ri-group-line',
             color: 'error',
             variant: 'tonal',
         },
         {
-            title: 'Total Operator',
+            title: 'TOTAL_OPERATOR',
             count: 42,
-            subtitle: 'Operator',
+            subtitle: 'OPERATOR',
             icon: 'ri-group-line',
             color: 'warning',
             variant: 'tonal',
         }
     ]
 })
+
 </script>
 
 <style scoped></style>

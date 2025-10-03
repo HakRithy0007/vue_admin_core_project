@@ -1,8 +1,10 @@
 <template>
+
   <VApp>
     <VSonner position="top-right" class="!text-xs" :duration="1500" />
     <RouterView />
   </VApp>
+
 </template>
 
 <script lang="ts" setup>

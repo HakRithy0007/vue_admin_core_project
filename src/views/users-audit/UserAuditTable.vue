@@ -1,7 +1,7 @@
 <template>
     <VCard>
         <VDataTable :headers="headers" :items="paginatedData" item-value="id"
-            class="text-no-wrap custom-data-table poppins">
+            :items-per-page-text="t('ITEMS_PER_PAGE')" class="text-no-wrap custom-data-table user-audit_table">
             <template #item.n°="{ index }">
                 {{ (page - 1) * UserPerPage + index + 1 }}
             </template>
@@ -26,11 +26,11 @@
                     {{ item.Description }}
                 </span>
             </template>
+
             <template #item.date="{ item }">
                 <span class="flex justify-center items-center gap-2">
                     <Icon icon="clarity:date-solid" class="text-[20px] text-info" />
                     {{ new Date(item.Date).toLocaleDateString() }}
-
                 </span>
             </template>
         </VDataTable>
@@ -39,32 +39,48 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue"
+import { useI18n } from "vue-i18n"
 import { Icon } from "@iconify/vue"
 
+const { t } = useI18n()
 const page = ref(1)
 const UserPerPage = ref(100)
 
-const headers = [
-    { title: "N°", key: "n°", align: "center" as const, class: "font-poppins", sortable: false },
-    { title: "Account", key: "account", align: "center" as const, class: "font-poppins", sortable: false },
-    { title: "Context", key: "context", align: "center" as const, class: "font-poppins", sortable: false },
-    { title: "Description", key: "description", align: "center" as const, class: "font-poppins", sortable: false },
-    { title: "Date", key: "date", align: "center" as const, class: "font-poppins", sortable: false },
-]
+const headers = computed(() => [
+    { title: t("NO"), key: "n°", align: "center" as const, sortable: false },
+    { title: t("ACCOUNT"), key: "account", align: "center" as const, sortable: false },
+    { title: t("CONTEXT"), key: "context", align: "center" as const, sortable: false },
+    { title: t("DESCRIPTION"), key: "description", align: "center" as const, sortable: false },
+    { title: t("DATE"), key: "date", align: "center" as const, sortable: false }
+])
 
 const userData = ref([
     { id: 1, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
     { id: 2, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
     { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 4, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 5, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 6, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 7, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 8, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 8, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 8, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-    { id: 8, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
-
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 3, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" },
+    { id: 4, Account: "Galasasen", Context: "Slixby", Description: "galasasen.slixby", Date: "12/08/2025" }
 ])
 
 const paginatedData = computed(() => {
@@ -97,14 +113,6 @@ const paginatedData = computed(() => {
     display: none;
 }
 
-.custom-data-table :deep(.v-data-table__wrapper),
-.custom-data-table :deep(.v-table__wrapper) {
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    cursor: pointer;
-}
-
 .custom-data-table :deep(tbody tr:hover) {
     background-color: rgba(var(--v-theme-primary), 0.08) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -112,5 +120,27 @@ const paginatedData = computed(() => {
 
 .custom-data-table :deep(tbody tr:hover td) {
     color: rgb(var(--v-theme-primary));
+}
+
+.custom-data-table :deep(th) {
+    font-family: 'Kantumruy Pro', serif !important;
+}
+
+.custom-data-table :deep(td) {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.custom-data-table :deep(td.khmer) {
+    font-family: 'Kantumruy Pro', serif !important;
+}
+
+.user-audit_table :deep(th) {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.user-audit_table :deep(th span) {
+    font-size: 16px;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
     <VCard>
-        <VDataTable :headers="headers" :items="paginatedData" item-value="id"
-            class="text-no-wrap custom-data-table poppins">
+        <VProgressLinear indeterminate color="primary" />
+        <VDataTable :headers="headers" :items="paginatedData" item-value="id" :items-per-page-text="t('ITEMS_PER_PAGE')"
+            class="text-no-wrap custom-data-table member-table">
+
             <!-- Avatar -->
             <template #item.avatar="{ item }">
                 <VAvatar size="34" :variant="!item.avatar ? 'tonal' : undefined"
@@ -16,7 +18,9 @@
             <!-- Status -->
             <template #item.status="{ item }">
                 <VChip :color="resolveUserStatusVariant(item.status)" size="small">
-                    <span class="w-[60px]">{{ item.status }}</span>
+                    <span :class="isKhmer(item.status) ? 'khmer' : ''">
+                        {{ item.status }}
+                    </span>
                 </VChip>
             </template>
 
@@ -42,7 +46,7 @@
             <template #item.action="{ item }">
                 <div class="d-flex gap-2 justify-center">
                     <!-- Edit Button -->
-                    <v-tooltip text="Edit">
+                    <v-tooltip :text="t('EDIT')">
                         <template #activator="{ props }">
                             <VBtn variant="tonal" v-bind="props" icon size="small" color="warning"
                                 @click="openEditDialog(item)">
@@ -52,7 +56,7 @@
                     </v-tooltip>
 
                     <!-- View Detail -->
-                    <v-tooltip text="View Audit">
+                    <v-tooltip :text="t('VIEW')">
                         <template #activator="{ props }">
                             <VBtn v-bind="props" icon size="small" variant="tonal" color="info"
                                 @click="openViewDialog(item)">
@@ -62,7 +66,7 @@
                     </v-tooltip>
 
                     <!-- Delete Button -->
-                    <v-tooltip text="Delete">
+                    <v-tooltip :text="t('DELETE')">
                         <template #activator="{ props }">
                             <VBtn v-bind="props" icon size="small" variant="tonal" color="error"
                                 @click="deleteUser(item)">
@@ -82,18 +86,18 @@
         <v-dialog v-model="viewDialogVisible" max-width="600" opacity="0.7">
             <v-card>
                 <v-card-title class="text-h6">
-                    User Audit - {{ selectedUserForAudit?.username }}
+                    {{ t('USER_AUDIT') }} - {{ selectedUserForAudit?.username }}
                 </v-card-title>
                 <v-divider />
                 <v-card-text>
-                    <div class="space-y-2 poppins">
-                        <p><b>First Name:</b> {{ selectedUserForAudit?.firstname }}</p>
-                        <p><b>Last Name:</b> {{ selectedUserForAudit?.lastname }}</p>
-                        <p><b>Status:</b> {{ selectedUserForAudit?.status }}</p>
-                        <p><b>Role:</b> {{ selectedUserForAudit?.role }}</p>
-                        <p><b>Creator:</b> {{ selectedUserForAudit?.creator }}</p>
+                    <div class="space-y-2">
+                        <p><b>{{ t('FIRST_NAME') }}:</b> {{ selectedUserForAudit?.firstname }}</p>
+                        <p><b>{{ t('LAST_NAME') }}:</b> {{ selectedUserForAudit?.lastname }}</p>
+                        <p><b>{{ t('STATUS') }}:</b> {{ selectedUserForAudit?.status }}</p>
+                        <p><b>{{ t('ROLE') }}:</b> {{ selectedUserForAudit?.role }}</p>
+                        <p><b>{{ t('CREATOR') }}:</b> {{ selectedUserForAudit?.creator }}</p>
                         <p>
-                            <b>Created Date:</b>
+                            <b>{{ t('CREATED_DATE') }}:</b>
                             {{ new Date(selectedUserForAudit?.createdDate).toLocaleDateString() }}
                         </p>
                     </div>
@@ -101,7 +105,7 @@
                 <v-divider />
                 <v-card-actions class="justify-end">
                     <v-btn color="primary" variant="outlined" @click="closeViewDialog">
-                        Close
+                        {{ t('CLOSE') }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -110,9 +114,9 @@
         <!-- Delete Confirm Dialog -->
         <v-dialog v-model="deleteDialogVisible" max-width="400" opacity="0.7">
             <v-card>
-                <v-card-title class="text-h6 py-2">
-                    <span class="flex justify-center items-center poppins">
-                        Confirm Delete
+                <v-card-title class="text-[16px] py-2">
+                    <span class="flex justify-center items-center">
+                        {{ t('CONFIRM_DELETE') }}
                     </span>
                 </v-card-title>
 
@@ -120,17 +124,17 @@
 
                 <v-card-text>
                     <span class="flex justify-center items-center pt-4 gap-2">
-                        <span class="poppins">Are you sure you want to delete ?</span>
+                        <span>{{ t('ARE_YOU_SURE_YOU_WANT_TO_DELETE') }}</span>
                     </span>
                 </v-card-text>
 
                 <VDivider />
 
-                <v-card-actions class="pa-4 flex justify-center items-center">
-                    <v-spacer />
-                    <v-btn variant="outlined" color="primary" class="poppins" text="Cancel"
+                <v-card-actions class="pa-2 flex justify-center items-center">
+                    <v-btn variant="outlined" color="error" class="!w-[80px] !border-2" :text="t('CANCEL')"
                         @click="deleteDialogVisible = false" />
-                    <v-btn variant="outlined" color="success" class="poppins" text="Delete" @click="confirmDelete" />
+                    <v-btn variant="outlined" color="info" class="!w-[80px] !border-2" :text="t('DELETE')"
+                        @click="confirmDelete" />
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -141,7 +145,6 @@
 import { ref, computed } from "vue"
 import { Icon } from "@iconify/vue"
 import EditUserDialog from "@/views/users/EditUser.vue"
-
 import avatar1 from "@images/avatars/avatar-1.png"
 import avatar2 from "@images/avatars/avatar-2.png"
 import avatar3 from "@images/avatars/avatar-3.png"
@@ -150,36 +153,34 @@ import avatar5 from "@images/avatars/avatar-5.png"
 import avatar6 from "@images/avatars/avatar-6.png"
 import avatar7 from "@images/avatars/avatar-7.png"
 import avatar8 from "@images/avatars/avatar-8.png"
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const page = ref(1)
 const UserPerPage = ref(100)
-
 const dialogVisible = ref(false)
 const selectedUser = ref(null)
-
 const viewDialogVisible = ref(false)
 const selectedUserForAudit = ref<any>(null)
-
 const deleteDialogVisible = ref(false)
 const userToDelete = ref<any>(null)
 
-const headers = [
-    { title: "Avatar", key: "avatar", align: "center" as const, class: "font-poppins" },
-    // { title: "First Name", key: "firstname", align: "center" as const, class: "font-poppins" },
-    // { title: "Last Name", key: "lastname", align: "center" as const, class: "font-poppins" },
-    { title: "Username", key: "username", align: "center" as const, class: "font-poppins" },
-    { title: "Status", key: "status", align: "center" as const, class: "font-poppins" },
-    // { title: "Created Date", key: "createdDate", align: "center" as const, class: "font-poppins" },
-    { title: "Role", key: "role", align: "center" as const, class: "font-poppins" },
-    { title: "Creator", key: "creator", align: "center" as const, class: "font-poppins" },
-    { title: "Action", key: "action", align: "center" as const, class: "font-poppins" },
-]
+const isKhmer = (text: string) => {
+    return /[\u1780-\u17FF]/.test(text)
+}
+
+const headers = computed(() => [
+    { title: t("AVATAR"), key: "avatar", align: "center" as const },
+    { title: t("USERNAME"), key: "username", align: "center" as const },
+    { title: t("STATUS"), key: "status", align: "center" as const },
+    { title: t("ROLE"), key: "role", align: "center" as const },
+    { title: t("CREATOR"), key: "creator", align: "center" as const },
+    { title: t("ACTION"), key: "action", align: "center" as const },
+])
 
 const userData = ref([
     {
         id: 1,
-        // firstname: "Galasasen",
-        // lastname: "Slixby",
         username: "galasasen.slixby",
         email: "galasasen@example.com",
         membername: "galasasen.slixby",
@@ -191,8 +192,6 @@ const userData = ref([
     },
     {
         id: 2,
-        // firstname: "Halsey",
-        // lastname: "Redmore",
         username: "halsey.redmore",
         email: "halsey@example.com",
         membername: "halsey.redmore",
@@ -204,8 +203,6 @@ const userData = ref([
     },
     {
         id: 3,
-        // firstname: "Marjory",
-        // lastname: "Sicely",
         username: "marjory.sicely",
         email: "marjory@example.com",
         membername: "marjory.sicely",
@@ -217,8 +214,6 @@ const userData = ref([
     },
     {
         id: 4,
-        // firstname: "Cyrill",
-        // lastname: "Risby",
         username: "cyrill.risby",
         email: "cyrill@example.com",
         membername: "cyrill.risby",
@@ -230,8 +225,6 @@ const userData = ref([
     },
     {
         id: 5,
-        // firstname: "Maggy",
-        // lastname: "Hurran",
         username: "maggy.hurran",
         email: "maggy@example.com",
         membername: "maggy.hurran",
@@ -243,8 +236,6 @@ const userData = ref([
     },
     {
         id: 6,
-        // firstname: "Silvain",
-        // lastname: "Halstead",
         username: "silvain.halstead",
         email: "silvain@example.com",
         membername: "silvain.halstead",
@@ -256,8 +247,6 @@ const userData = ref([
     },
     {
         id: 7,
-        // firstname: "Breena",
-        // lastname: "Gallemore",
         username: "breena.gallemore",
         email: "breena@example.com",
         membername: "breena.gallemore",
@@ -269,14 +258,11 @@ const userData = ref([
     },
     {
         id: 8,
-        // firstname: "Kathryne",
-        // lastname: "Liger",
         username: "kathryne.liger",
         email: "kathryne@example.com",
         membername: "kathryne.liger",
         phone: "0123456789",
         status: "pending",
-        // createdDate: "2024-03-15",
         role: "Player",
         creator: "Admin",
         avatar: avatar8,
@@ -363,12 +349,37 @@ const confirmDelete = () => {
     overflow-x: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    cursor: pointer;
 }
 
-.custom-data-table :deep(.v-data-table__wrapper)::-webkit-scrollbar,
-.custom-data-table :deep(.v-table__wrapper)::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
+.custom-data-table :deep(tbody tr:hover) {
+    background-color: rgba(var(--v-theme-primary), 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-data-table :deep(tbody tr:hover td) {
+    color: rgb(var(--v-theme-primary));
+}
+
+.custom-data-table :deep(th) {
+    font-family: 'Kantumruy Pro', serif !important;
+}
+
+.custom-data-table :deep(td) {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.custom-data-table :deep(td.khmer) {
+    font-family: 'Kantumruy Pro', serif !important;
+}
+
+.member-table :deep(th) {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.member-table :deep(th span) {
+    font-size: 16px;
 }
 </style>

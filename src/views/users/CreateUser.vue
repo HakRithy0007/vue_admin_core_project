@@ -5,13 +5,25 @@
     <div class="left hidden lg:flex w-[50%] justify-start items-center">
       <VCard class="px-6">
         <div class="flex justify-center items-center gap-4">
-          <v-checkbox :label="t('ADMIN')"/>
-          <v-divider :thickness="2" vertical></v-divider>
 
-          <v-checkbox :label="t('MODERATOR')"/>
-          <v-divider :thickness="2" vertical></v-divider>
+          <!-- Admin -->
+          <v-checkbox :label="t('ALL')" :model-value="role === 'all'"
+            @update:model-value="val => role = val ? 'all' : ''" />
+          <v-divider :thickness="2" vertical />
 
-          <v-checkbox :label="t('OPERATOR')"/>
+          <!-- Admin -->
+          <v-checkbox :label="t('ADMIN')" :model-value="role === 'admin'"
+            @update:model-value="val => role = val ? 'admin' : ''" />
+          <v-divider :thickness="2" vertical />
+
+          <!-- Moderator -->
+          <v-checkbox :label="t('MODERATOR')" :model-value="role === 'moderator'"
+            @update:model-value="val => role = val ? 'moderator' : ''" />
+          <v-divider :thickness="2" vertical />
+
+          <!-- Operator -->
+          <v-checkbox :label="t('OPERATOR')" :model-value="role === 'operator'"
+            @update:model-value="val => role = val ? 'operator' : ''" />
         </div>
       </VCard>
     </div>
@@ -40,7 +52,7 @@
     <!-- Right Section -->
     <div class="right w-[50%] flex justify-end items-center">
       <VCol cols="5" class="hidden lg:block">
-        <VTextField :label="t('SEARCH_USERNAME')" type="text"/>
+        <VTextField :label="t('SEARCH_USERNAME')" type="text" />
       </VCol>
 
       <VBtn type="button" class="!h-[48px] bg-warning flex justify-center items-center" @click="dialog = true">
@@ -69,7 +81,7 @@ import { Icon } from "@iconify/vue"
 import { ref } from 'vue'
 import type { Anchor } from 'vuetify'
 import { useI18n } from 'vue-i18n'
-
+const role = ref("")
 const { t } = useI18n()
 
 const location = ref<Anchor>('right')

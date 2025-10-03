@@ -1,7 +1,9 @@
 <template>
     <VCard>
         <VProgressLinear indeterminate color="primary" />
-        <VDataTable :headers="headers" :items="paginatedData" item-value="id" class="text-no-wrap custom-data-table">
+        <VDataTable :headers="headers" :items="userData" item-value="id" :items-per-page="10"
+            :items-per-page-text="t('ITEMS_PER_PAGE')" :items-per-page-all-text="t('ALL')"
+            class="text-no-wrap custom-data-table user-table">
 
             <!-- Avatar -->
             <template #item.avatar="{ item }">
@@ -45,7 +47,7 @@
             <template #item.action="{ item }">
                 <div class="d-flex gap-2 justify-center">
                     <!-- Edit Button -->
-                    <v-tooltip text="Edit">
+                    <v-tooltip :text="t('EDIT')">
                         <template #activator="{ props }">
                             <VBtn variant="tonal" v-bind="props" icon size="small" color="warning"
                                 @click="openEditDialog(item)">
@@ -54,8 +56,9 @@
                         </template>
                     </v-tooltip>
 
+
                     <!-- View Detail -->
-                    <v-tooltip text="View Audit">
+                    <v-tooltip :text="t('VIEW')">
                         <template #activator="{ props }">
                             <VBtn v-bind="props" icon size="small" variant="tonal" color="info"
                                 @click="openViewDialog(item)">
@@ -65,7 +68,7 @@
                     </v-tooltip>
 
                     <!-- Delete Button -->
-                    <v-tooltip text="Delete">
+                    <v-tooltip :text="t('DELETE')">
                         <template #activator="{ props }">
                             <VBtn v-bind="props" icon size="small" variant="tonal" color="error"
                                 @click="deleteUser(item)">
@@ -102,20 +105,16 @@
                     </div>
                 </v-card-text>
                 <v-divider />
-                <v-card-actions class="justify-end">
-                    <v-btn color="primary" variant="outlined" @click="closeViewDialog">
-                        Close
-                    </v-btn>
-                </v-card-actions>
+
             </v-card>
         </v-dialog>
 
         <!-- Delete Confirm Dialog -->
         <v-dialog v-model="deleteDialogVisible" max-width="400" opacity="0.7">
             <v-card>
-                <v-card-title class="text-h6 py-2">
+                <v-card-title class="text-[16px] py-2">
                     <span class="flex justify-center items-center">
-                        Confirm Delete
+                        {{ t('CONFIRM_DELETE') }}
                     </span>
                 </v-card-title>
 
@@ -123,20 +122,25 @@
 
                 <v-card-text>
                     <span class="flex justify-center items-center pt-4 gap-2">
-                        <span>Are you sure you want to delete ?</span>
+                        <span>{{ t('ARE_YOU_SURE_YOU_WANT_TO_DELETE') }}</span>
                     </span>
                 </v-card-text>
 
                 <VDivider />
 
-                <v-card-actions class="pa-2 flex justify-center items-center">
-                    <v-btn variant="outlined" color="primary" class="!w-[80px] !border-2" text="Cancel"
-                        @click="deleteDialogVisible = false" />
-                    <v-btn variant="outlined" color="success" class="!w-[80px] !border-2" text="Delete"
-                        @click="confirmDelete" />
+                <v-card-actions class="pa-2 flex justify-center items-center gap-2">
+                    <v-btn variant="outlined" color="error" class="!w-[80px] !border-2"
+                        @click="deleteDialogVisible = false">
+                        {{ t('CANCEL') }}
+                    </v-btn>
+
+                    <v-btn variant="outlined" color="info" class="!w-[80px] !border-2" @click="confirmDelete">
+                        {{ t('DELETE') }}
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
     </VCard>
 </template>
 
@@ -144,8 +148,8 @@
 import { ref, computed } from "vue"
 import { Icon } from "@iconify/vue"
 import EditUserDialog from "@/views/users/EditUser.vue"
-import { useI18n } from 'vue-i18n'
 import avatar1 from "@images/avatars/avatar-1.png"
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const page = ref(1)
@@ -156,18 +160,19 @@ const viewDialogVisible = ref(false)
 const selectedUserForAudit = ref<any>(null)
 const deleteDialogVisible = ref(false)
 const userToDelete = ref<any>(null)
+
 const isKhmer = (text: string) => {
     return /[\u1780-\u17FF]/.test(text)
 }
 
-const headers = [
+const headers = computed(() => [
     { title: t("AVATAR"), key: "avatar", align: "center" as const },
     { title: t("USERNAME"), key: "username", align: "center" as const },
     { title: t("STATUS"), key: "status", align: "center" as const },
     { title: t("ROLE"), key: "role", align: "center" as const },
     { title: t("CREATOR"), key: "creator", align: "center" as const },
     { title: t("ACTION"), key: "action", align: "center" as const },
-]
+])
 
 const userData = ref([
     {
@@ -302,7 +307,171 @@ const userData = ref([
         creator: "Admin",
         avatar: avatar1,
     },
-
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
+    {
+        id: 1,
+        username: "galasasen.slixby",
+        email: "galasasen@example.com",
+        membername: "galasasen.slixby",
+        phone: "0123456789",
+        status: "inactive",
+        role: "Player",
+        creator: "Admin",
+        avatar: avatar1,
+    },
 ])
 
 const paginatedData = computed(() => {
@@ -352,11 +521,6 @@ const openViewDialog = (user: any) => {
     viewDialogVisible.value = true
 }
 
-const closeViewDialog = () => {
-    viewDialogVisible.value = false
-    selectedUserForAudit.value = null
-}
-
 const deleteUser = (user: any) => {
     userToDelete.value = user
     deleteDialogVisible.value = true
@@ -398,7 +562,7 @@ const confirmDelete = () => {
 }
 
 .custom-data-table :deep(th) {
-    font-family: 'Noto Serif Khmer', serif !important;
+    font-family: 'Kantumruy Pro', serif !important;
 }
 
 .custom-data-table :deep(td) {
@@ -406,6 +570,16 @@ const confirmDelete = () => {
 }
 
 .custom-data-table :deep(td.khmer) {
-    font-family: 'Noto Serif Khmer', serif !important;
+    font-family: 'Kantumruy Pro', serif !important;
+}
+
+.user-table :deep(th) {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.user-table :deep(th span) {
+    font-size: 16px;
 }
 </style>

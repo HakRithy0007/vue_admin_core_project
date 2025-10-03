@@ -11,15 +11,17 @@
             <VCardItem class="notification-header">
                 <div class="d-flex justify-space-between align-center w-100">
                     <div class="d-flex align-center gap-2">
-                        <h6 class="text-h6 text-info poppins text-high-emphasis">
-                            Notifications
+                        <h6 class="text-h6 text-info text-high-emphasis"
+                            :class="isKhmer(t('NOTIFICATIONS')) ? 'khmer' : 'poppins'">
+                            {{ t('NOTIFICATIONS') }}
                         </h6>
-                        <VChip v-if="unreadCount > 0" color="warning" size="small" class="notification-badge poppins">
-                            {{ unreadCount }} new
+                        <VChip v-if="unreadCount > 0" color="warning" size="small" class="notification-badge"
+                            :class="isKhmer(t('NEW')) ? 'khmer' : 'poppins'">
+                            {{ unreadCount }} {{ t('NEW') }}
                         </VChip>
                     </div>
                     <VBtn icon size="small" variant="text" color="white" @click="markAllAsRead">
-                        <VIcon icon="ri-mail-open-line" size="20" class="text-high-emphasis"/>
+                        <VIcon icon="ri-mail-open-line" size="20" class="text-high-emphasis" />
                     </VBtn>
                 </div>
             </VCardItem>
@@ -27,7 +29,7 @@
             <VDivider />
 
             <!-- Notification Items -->
-            <VList class="notification-list">
+            <VList class="notification-list pa-4">
                 <template v-if="notifications.length > 0">
                     <VListItem v-for="(notification, index) in notifications" :key="notification.id"
                         class="notification-item" @click="markAsRead(notification.id)">
@@ -37,7 +39,8 @@
                             </VAvatar>
                         </template>
 
-                        <div class="notification-content poppins text-high-emphasis">
+                        <div class="notification-content text-high-emphasis"
+                            :class="isKhmer(notification.title) ? 'khmer' : 'poppins'">
                             <VListItemTitle class="notification-title">
                                 {{ notification.title }}
                             </VListItemTitle>
@@ -70,18 +73,20 @@
                 <VListItem v-else class="notification-item">
                     <div class="text-center py-8">
                         <VIcon icon="ri-notification-off-line" size="48" color="grey" class="mb-2" />
-                        <div class="text-body-2 text-grey poppins">
-                            <span class="text-lg">No notifications</span>
+                        <div class="text-body-2 text-grey"
+                            :class="isKhmer(t('NO_NOTIFICATIONS')) ? 'khmer' : 'poppins'">
+                            <span class="text-lg">{{ t('NO_NOTIFICATIONS') }}</span>
                         </div>
                     </div>
                 </VListItem>
             </VList>
 
             <!-- Footer Button -->
-            <VCardActions class="notification-footer" v-if="notifications.length > 0">
+            <VCardActions class="notification-footer pa-4" v-if="notifications.length > 0">
                 <VBtn block color="warning" variant="flat" size="large"
-                    class="text-none font-weight-medium poppins text-high-emphasis">
-                    View All Notifications
+                    class="text-none font-weight-medium text-high-emphasis"
+                    :class="isKhmer(t('VIEW_ALL_NOTIFICATIONS')) ? 'khmer' : 'poppins'">
+                    {{ t('VIEW_ALL_NOTIFICATIONS') }}
                 </VBtn>
             </VCardActions>
         </VCard>
@@ -91,6 +96,13 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { Icon } from "@iconify/vue"
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const isKhmer = (text: string) => {
+    return /[\u1780-\u17FF]/.test(text)
+}
 
 const notifications = ref([
     {
@@ -101,249 +113,6 @@ const notifications = ref([
         read: false,
         avatar: '👤',
         avatarColor: '#E3F2FD'
-    },
-    {
-        id: 2,
-        title: 'Cecilia Becker',
-        message: 'Accepted your connection',
-        time: '12h ago',
-        read: false,
-        avatar: 'CB',
-        avatarColor: '#FFA726'
-    },
-    {
-        id: 3,
-        title: 'New message received 👋',
-        message: 'You have 10 unread messages',
-        time: '11 Aug',
-        read: true,
-        avatar: '💬',
-        avatarColor: '#E3F2FD'
-    },
-    {
-        id: 4,
-        title: 'Monthly report generated',
-        message: 'July month financial report is generated',
-        time: 'Apr 24, 10:30 AM',
-        read: false,
-        avatar: '📊',
-        avatarColor: '#1976D2'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
-    },
-    {
-        id: 5,
-        title: 'Application has been approved 🎉',
-        message: 'Your application has been approved',
-        time: 'Apr 20, 09:15 AM',
-        read: false,
-        avatar: 'MG',
-        avatarColor: '#4CAF50'
     },
 ])
 
@@ -368,156 +137,12 @@ const markAllAsRead = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.notification-card {
-    border-radius: 8px;
-    overflow: hidden;
+<style scoped>
+.khmer {
+    font-family: 'Kantumruy Pro', serif !important;
 }
 
-.notification-header {
-    padding: 16px 20px;
-
-    .text-h6 {
-        font-size: 1.125rem !important;
-        font-weight: 500;
-    }
-}
-
-.notification-badge {
-    background-color: rgb(254, 156, 9) !important;
-    color: rgb(255, 255, 255) !important;
-    text-transform: lowercase;
-}
-
-.notification-list {
-    max-height: 420px;
-    overflow-y: auto;
-    padding: 0 !important;
-
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 3px;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-    }
-}
-
-.notification-item {
-    padding: 16px 20px !important;
-    min-height: auto !important;
-    position: relative;
-    flex-wrap: wrap;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-
-        .clear-btn {
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-}
-
-.notification-avatar {
-    flex-shrink: 0;
-    margin-right: 12px;
-}
-
-.notification-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.notification-title {
-    font-size: 0.9375rem !important;
-    font-weight: 500 !important;
-    line-height: 1.4 !important;
-    margin-bottom: 4px !important;
-    opacity: 1 !important;
-}
-
-.notification-message {
-    font-size: 0.8125rem !important;
-    line-height: 1.4 !important;
-    margin-bottom: 4px !important;
-    opacity: 1 !important;
-}
-
-.notification-time {
-    font-size: 0.75rem !important;
-    opacity: 1 !important;
-}
-
-.notification-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 12px;
-}
-
-.clear-btn {
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    color: rgba(255, 255, 255, 0.6) !important;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        color: rgba(255, 255, 255, 0.9) !important;
-        transform: scale(1.1);
-    }
-
-    &:active {
-        transform: scale(0.95);
-    }
-
-    :deep(.v-btn__content) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-.notification-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 10px;
-}
-
-.notification-divider {
-    position: absolute;
-    bottom: 0;
-    left: 72px;
-    right: 20px;
-    width: auto;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.notification-footer {
-    padding: 16px 20px;
-
-    :deep(.v-btn) {
-        background-color: rgb(255, 180, 0) !important;
-        text-transform: none;
-        letter-spacing: normal;
-        box-shadow: none;
-
-        &:hover {
-            background-color: rgb(255, 193, 51) !important;
-        }
-    }
+.poppins {
+    font-family: 'Poppins', sans-serif !important;
 }
 </style>

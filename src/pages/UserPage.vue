@@ -1,7 +1,6 @@
 <template>
 
     <VRow class="match-height">
-        <VProgressLinear indeterminate color="primary" />
 
         <VCol cols="12">
             <TopContentUser />

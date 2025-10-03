@@ -6,8 +6,26 @@ html[lang="en"] {
 }
 
 html[lang="km"] {
-  font-family: 'Noto Serif Khmer', serif;
+  font-family: 'Kantumruy Pro', serif;
 }
+
+
+@font-face {
+  font-family: 'Kantumruy Pro';
+  src: url('/src/assets/font/KantumruyPro-Medium.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Step 2: Assign the font based on language */
+html[lang="en"] {
+  font-family: 'Poppins', sans-serif;
+}
+
+html[lang="km"] {
+  font-family: 'Kantumruy Pro', serif;
+}
+
 
 
 /* Battambang */

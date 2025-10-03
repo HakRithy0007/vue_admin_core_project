@@ -2,7 +2,7 @@
     <div class="w-full h-full">
 
         <VCard class="mb-6">
-            <div class="flex justify-center items-center poppins text-[2rem]">COINS</div>
+            <div class="flex justify-center items-center text-[2rem]">{{ t('COINS') }}</div>
         </VCard>
 
         <div class="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center items-center">
@@ -11,36 +11,42 @@
                     <div class="coins-image flex justify-center items-center p-2 relative ">
                         <img :src="coin.image" alt="Coins" class="max-w-[100px] max-h-[100px] object-contain" />
                         <span
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 poppins font-bold -translate-y-[70%] text-black poppins text-md">
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 font-bold -translate-y-[70%] text-black text-md">
                             <span>{{ coin.value }} {{ coin.currency }}</span>
                         </span>
                     </div>
 
                     <div class="w-full grid py-3">
-                        <div class="w-full h-full flex justify-start items-center poppins gap-4">
-                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">VALUE
-                                OF</span>:
+                        <div class="w-full h-full flex justify-start items-center gap-4">
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ t('VALUE_OF') }}
+                            </span>:
                             <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
                                 <span>{{ coin.value }} {{ coin.currency }}</span>
                             </span>
                         </div>
-                        <div class="w-full h-full flex justify-start items-center poppins gap-4">
-                            <span
-                                class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">COLOR</span>:
-                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">{{
-                                coin.color }}</span>
+                        <div class="w-full h-full flex justify-start items-center gap-4">
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ t('COLOR') }}
+                            </span>:
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ t(coin.color.toUpperCase()) }}
+                            </span>
                         </div>
-                        <div class="w-full h-full flex justify-start items-center poppins gap-4">
-                            <span
-                                class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">DATE</span>:
-                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">{{
-                                coin.date }}</span>
+                        <div class="w-full h-full flex justify-start items-center gap-4">
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ t('DATE') }}
+                            </span>:
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ coin.date }}
+                            </span>
                         </div>
-                        <div class="w-full h-full flex justify-start items-center poppins gap-4">
-                            <span
-                                class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">EDIT</span>:
+                        <div class="w-full h-full flex justify-start items-center gap-4">
+                            <span class="w-[60px] text-[12px] flex justify-center items-center rounded-[2px]">
+                                {{ t('EDIT') }}
+                            </span>:
 
-                            <v-tooltip text="Edit Coin">
+                            <v-tooltip :text="t('EDIT_COIN')">
                                 <template v-slot:activator="{ props }">
                                     <v-btn v-bind="props"
                                         class="!w-[60px] bg-info border-none !h-[18px] !text-[12px] !flex !justify-center !items-center !rounded-[2px]"
@@ -59,7 +65,7 @@
 
         <!-- Edit Dialog -->
         <VDialog v-model="isDialogVisible" max-width="600" opacity="0.7">
-            <VCard title="Edit Coin" class="pa-4 flex justify-center items-center poppins">
+            <VCard :title="t('EDIT_COIN')" class="pa-4 flex justify-center items-center">
                 <DialogCloseBtn variant="text" size="default" @click="isDialogVisible = false" />
 
 
@@ -71,7 +77,7 @@
                                 <img :src="editForm.image" alt="Coin Preview"
                                     class="max-w-[120px] max-h-[120px] object-contain" />
                                 <span
-                                    class="absolute top-1/2 left-1/2 -translate-x-[40%] -translate-y-[73%] poppins font-bold text-black text-lg">
+                                    class="absolute top-1/2 left-1/2 -translate-x-[40%] -translate-y-[73%] font-bold text-black text-lg">
                                     {{ editForm.value }} {{ editForm.currency }}
                                 </span>
                             </div>
@@ -83,25 +89,26 @@
 
                         <!-- Value -->
                         <VCol cols="12" sm="6">
-                            <VTextField v-model="editForm.value" label="Value" placeholder="Enter coin value"
-                                type="text" />
+                            <VTextField v-model="editForm.value" :label="t('VALUE')"
+                                :placeholder="t('ENTER_COIN_VALUE')" type="text" />
                         </VCol>
 
                         <!-- Currency -->
                         <VCol cols="12" sm="6">
-                            <VSelect v-model="editForm.currency" label="Currency" :items="currencyOptions"
-                                item-title="label" item-value="symbol" />
+                            <VSelect v-model="editForm.currency" :label="t('CURRENCY')"
+                                :items="translatedCurrencyOptions" item-title="label" item-value="symbol" />
                         </VCol>
 
                         <!-- Color -->
                         <VCol cols="12" sm="6">
-                            <VSelect v-model="editForm.color" label="Color" :items="colorOptions" />
+                            <VSelect v-model="editForm.color" :label="t('COLOR')" :items="translatedColorOptions"
+                                item-title="label" item-value="value" />
                         </VCol>
 
                         <!-- Image Selection -->
                         <VCol cols="12">
-                            <VSelect v-model="editForm.image" label="Coin Image" :items="imageOptions" item-title="name"
-                                item-value="url">
+                            <VSelect v-model="editForm.image" :label="t('COIN_IMAGE')" :items="translatedImageOptions"
+                                item-title="name" item-value="url">
                                 <template v-slot:selection="{ item }">
                                     <div class="flex items-center gap-2">
                                         <img :src="item.value" alt="coin" class="w-8 h-8 object-contain" />
@@ -122,12 +129,11 @@
 
                 <VCardActions>
                     <VSpacer />
-                    <VBtn variant="outlined" color="primary" class="poppins !border-2 !w-[80px]"
-                        @click="isDialogVisible = false">
-                        CANCEL
+                    <VBtn variant="outlined" color="error" class="!border-2 !w-[80px]" @click="isDialogVisible = false">
+                        {{ t('CANCEL') }}
                     </VBtn>
-                    <VBtn variant="outlined" color="success" class="poppins !border-2 !w-[80px]" @click="saveChanges">
-                        SAVE
+                    <VBtn variant="outlined" color="info" class="!border-2 !w-[80px]" @click="saveChanges">
+                        {{ t('SAVE') }}
                     </VBtn>
                 </VCardActions>
             </VCard>
@@ -136,14 +142,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { Icon } from "@iconify/vue"
+import { useI18n } from 'vue-i18n'
 import coin1 from '@/assets/images/coins/coin1.svg?url';
 import coin2 from '@/assets/images/coins/coin2.svg?url';
 import coin3 from '@/assets/images/coins/coin3.svg?url';
 import coin4 from '@/assets/images/coins/coin4.svg?url';
 import coin5 from '@/assets/images/coins/coin5.svg?url';
 import coin6 from '@/assets/images/coins/coin6.svg?url';
+
+const { t } = useI18n()
 
 interface Coin {
     image: string
@@ -167,22 +176,44 @@ const editForm = reactive({
 })
 
 const currencyOptions = [
-    { label: 'Khmer Riel', symbol: '៛' },
-    { label: 'US Dollar', symbol: '$' },
-    { label: 'Thai Baht', symbol: '฿' },
-    { label: 'Vietnamese Dong', symbol: '₫' },
-    { label: 'Chinese Yuan', symbol: '¥' },
+    { label: 'KHMER_RIEL', symbol: '៛' },
+    { label: 'US_DOLLAR', symbol: '$' },
+    { label: 'THAI_BAHT', symbol: '฿' },
+    { label: 'VIETNAMESE_DONG', symbol: '₫' },
+    { label: 'CHINESE_YUAN', symbol: '¥' },
 ]
 
+const translatedCurrencyOptions = computed(() =>
+    currencyOptions.map(option => ({
+        label: t(option.label),
+        symbol: option.symbol
+    }))
+)
+
 const colorOptions = ['Gold', 'Silver', 'Bronze', 'Copper', 'Platinum']
+
+const translatedColorOptions = computed(() =>
+    colorOptions.map(color => ({
+        label: t(color.toUpperCase()),
+        value: color
+    }))
+)
+
 const imageOptions = [
-    { name: 'Coin 1', url: coin1 },
-    { name: 'Coin 2', url: coin2 },
-    { name: 'Coin 3', url: coin3 },
-    { name: 'Coin 4', url: coin4 },
-    { name: 'Coin 5', url: coin5 },
-    { name: 'Coin 6', url: coin6 },
+    { name: 'COIN_1', url: coin1 },
+    { name: 'COIN_2', url: coin2 },
+    { name: 'COIN_3', url: coin3 },
+    { name: 'COIN_4', url: coin4 },
+    { name: 'COIN_5', url: coin5 },
+    { name: 'COIN_6', url: coin6 },
 ]
+
+const translatedImageOptions = computed(() =>
+    imageOptions.map(option => ({
+        name: t(option.name),
+        url: option.url
+    }))
+)
 
 const rielCoins = ref<Coin[]>([
     { image: coin1, value: '50', currency: '៛', color: 'Gold', date: '2024', icon: 'si:edit-detailed-fill' },
@@ -203,6 +234,7 @@ const dollarCoins = ref<Coin[]>([
 ]);
 
 const allCoins = ref<Coin[]>([...rielCoins.value, ...dollarCoins.value]);
+
 const openEditDialog = (index: number) => {
     currentEditIndex.value = index
     const coin = allCoins.value[index]
@@ -215,7 +247,6 @@ const openEditDialog = (index: number) => {
     isDialogVisible.value = true
 }
 
-// Save changes
 const saveChanges = () => {
     if (currentEditIndex.value !== -1) {
         allCoins.value[currentEditIndex.value] = {

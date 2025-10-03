@@ -11,7 +11,7 @@
     </VCol>
 
     <VCol cols="12">
-      <UserAuditTable />
+      <MemberAuditTable />
     </VCol>
 
   </VRow>
@@ -19,6 +19,6 @@
 
 <script setup lang="ts">
 import DateContent from '@/components/DateContent.vue';
-import UserAuditTable from '@/views/users-audit/UserAuditTable.vue';
 import TopContentMemberAudit from '@/views/member-audit/TopContentMemberAudit.vue';
+import MemberAuditTable from '@/views/member-audit/MemberAuditTable.vue';
 </script>
