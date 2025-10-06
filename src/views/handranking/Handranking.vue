@@ -1,6 +1,20 @@
 <template>
     <div class="w-full h-full p-6">
-        <div class="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- <VCard class="mb-6 pa-4">
+            <div class="flex justify-center gap-4 items-center text-[2rem]">
+                <span>
+                    <VAvatar color="success" variant="tonal" rounded size="40" class="elevation-2">
+                        <VIcon size="30" icon="ri-subscript" />
+                    </VAvatar>
+                </span>
+                <span>
+                    {{ t('HANDRANKING') }}
+                </span>
+            </div>
+        </VCard> -->
+
+        <div class="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <!-- Card Item -->
             <VCard v-for="(rank, i) in handRankings" :key="i" class="overflow-hidden">
@@ -59,7 +73,7 @@
         </div>
 
         <!-- Edit Dialog (Outside the loop) -->
-        <VDialog v-model="isDialogVisible" max-width="600" opacity="0.7">
+        <VDialog v-model="isDialogVisible" max-width="400" opacity="0.7">
             <VCard :title="t('EDIT_RANKING')" class="flex justify-center items-center pa-4">
                 <DialogCloseBtn variant="text" size="default" @click="isDialogVisible = false" />
                 <VCardText>

@@ -118,5 +118,16 @@
   "CONFIRM_PASSWORD": "Confirm Password",
    "ENTER_CURRENT_PASSWORD": "Enter Current Password",
   "ENTER_NEW_PASSWORD": "Enter New Password",
-  "ENTER_CONFIRM_PASSWORD": "Enter Confirm Password"
+  "ENTER_CONFIRM_PASSWORD": "Enter Confirm Password",
+  "REWARD" : "Reward",
+  "COMPANYPROFIT": "Company Profit",
+  "BONUS": "Bonus",
+  "TAKEBONUS": "Take Bonus",
+  "WPOOL": "Winning Pool",
+  "BASE_CONFIGURATION": "Base Configuration",
+  "BASE_BET": "Base Bet",
+  "BASE_BONUS": "Base Bonus",
+  "STEP_CONFIGURATION": "Step Configuration",
+  "STEP_UNIT": "Step Unit",
+  "STEP_BONUS": "Step Bonus"
 }

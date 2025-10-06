@@ -35,7 +35,7 @@ function handleChangePassword() {
       <VImg :src="avatar1" />
 
       <!-- SECTION Menu -->
-      <VMenu activator="parent" width="240" location="bottom end" offset="14px">
+      <VMenu activator="parent" width="260" location="bottom end" offset="14px">
         <VList class="px-6">
           <!-- 👉 User Avatar & Name -->
           <VListItem>

@@ -1,9 +1,18 @@
 <template>
     <div class="w-full h-full">
 
-        <VCard class="mb-6">
-            <div class="flex justify-center items-center text-[2rem]">{{ t('COINS') }}</div>
-        </VCard>
+        <!-- <VCard class="mb-6 pa-4">
+            <div class="flex justify-center gap-4 items-center text-[2rem]">
+                <span>
+                    <VAvatar color="success" variant="tonal" rounded size="40" class="elevation-2">
+                        <VIcon size="30" icon="ri-copper-coin-line" />
+                    </VAvatar>
+                </span>
+                <span>
+                    {{ t('COINS') }}
+                </span>
+            </div>
+        </VCard> -->
 
         <div class="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center items-center">
             <VCard v-for="(coin, index) in allCoins" :key="'coin-' + index">
@@ -49,11 +58,10 @@
                             <v-tooltip :text="t('EDIT_COIN')">
                                 <template v-slot:activator="{ props }">
                                     <v-btn v-bind="props"
-                                        class="!w-[60px] bg-info border-none !h-[18px] !text-[12px] !flex !justify-center !items-center !rounded-[2px]"
+                                        class="!w-[60px] bg-info border-none !h-[18px] !text-[12px] !flex !justify-center !items-center !rounded-full"
                                         @click="openEditDialog(index)">
                                         <Icon :icon="coin.icon" width="24" height="24" />
                                     </v-btn>
-
                                 </template>
                             </v-tooltip>
                         </div>
@@ -62,13 +70,10 @@
             </VCard>
         </div>
 
-
         <!-- Edit Dialog -->
-        <VDialog v-model="isDialogVisible" max-width="600" opacity="0.7">
+        <VDialog v-model="isDialogVisible" max-width="400" opacity="0.7">
             <VCard :title="t('EDIT_COIN')" class="pa-4 flex justify-center items-center">
                 <DialogCloseBtn variant="text" size="default" @click="isDialogVisible = false" />
-
-
                 <VCardText>
                     <VRow>
                         <!-- Coin Image Preview -->

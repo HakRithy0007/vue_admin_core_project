@@ -28,6 +28,8 @@ const { t } = useI18n()
   <VerticalNavSectionTitle :item="{ heading: t('SETTING') }" />
   <VerticalNavLink :item="{ title: t('COINS'), icon: 'ri-money-dollar-circle-line', to: '/coin' }" />
   <VerticalNavLink :item="{ title: t('HANDRANKING'), icon: 'ri-trophy-line', to: '/handranking' }" />
+  <VerticalNavLink :item="{ title: t('REWARD'), icon: 'ri-vip-diamond-line', to: '/reward' }" />
+  <VerticalNavLink :item="{ title: t('COMPANYPROFIT'), icon: 'ri-money-dollar-box-line', to: '/companyprofit' }" />
 
   <!-- 👉 LOGOUT -->
   <VerticalNavSectionTitle :item="{ heading: t('LOGOUT') }" />

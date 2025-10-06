@@ -36,6 +36,14 @@ export const routes = [
         path: "useraudit",
         component: () => import("@/pages/UserAuditPage.vue"),
       },
+      {
+        path: "reward",
+        component: () => import("@/pages/RewardPage.vue"),
+      },
+      {
+        path: "companyprofit",
+        component: () => import("@/pages/CompanySettingPage.vue"),
+      },
     ],
   },
   {

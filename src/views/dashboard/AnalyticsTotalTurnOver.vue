@@ -6,11 +6,11 @@ import trophy from '@images/misc/trophy.png'
   <VCard class="position-relative">
     <VCardText>
       <div class="mb-2">
-        <h5 class="text-h5">
-          Congratulations John! <span class="text-high-emphasis">🎉</span>
+        <h5 class="text-[20px]">
+          TOTAL TURN OVER <span class="text-high-emphasis">🎉</span>
         </h5>
         <div class="text-body-1">
-          Best seller of the month
+          Turn over today
         </div>
       </div>
       <h4 class="text-h4 text-primary">
@@ -25,10 +25,7 @@ import trophy from '@images/misc/trophy.png'
     </VCardText>
 
     <!-- Trophy -->
-    <VImg
-      :src="trophy"
-      class="trophy"
-    />
+    <VImg :src="trophy" class="trophy" />
   </VCard>
 </template>
 

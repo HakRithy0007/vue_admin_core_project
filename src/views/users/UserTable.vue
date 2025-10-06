@@ -1,6 +1,7 @@
 <template>
     <VCard>
         <VProgressLinear indeterminate color="primary" />
+
         <VDataTable :headers="headers" :items="userData" item-value="id" :items-per-page="10"
             :items-per-page-text="t('ITEMS_PER_PAGE')" :items-per-page-all-text="t('ALL')"
             class="text-no-wrap custom-data-table user-table">
