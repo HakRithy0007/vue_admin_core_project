@@ -20,9 +20,7 @@ declare module 'vue' {
     Notification: typeof import('./src/components/Notification.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Sidebar: typeof import('./src/components/Sidebar.vue')['default']
     ThemeSwitcher: typeof import('./src/@core/components/ThemeSwitcher.vue')['default']
-    Topbar: typeof import('./src/components/Topbar.vue')['default']
     UserProfile: typeof import('./src/components/UserProfile.vue')['default']
     VueApexCharts: typeof import('vue3-apexcharts')['default']
   }

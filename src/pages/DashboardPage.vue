@@ -1,7 +1,7 @@
 <template>
   <VRow class="match-height">
 
-    <VProgressLinear indeterminate color="primary" />
+    <!-- <VProgressLinear indeterminate color="primary" /> -->
     <VCol cols="12" md="4">
       <AnalyticsAward />
     </VCol>

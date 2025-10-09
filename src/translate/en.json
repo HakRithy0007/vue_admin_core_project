@@ -129,5 +129,6 @@
   "BASE_BONUS": "Base Bonus",
   "STEP_CONFIGURATION": "Step Configuration",
   "STEP_UNIT": "Step Unit",
-  "STEP_BONUS": "Step Bonus"
+  "STEP_BONUS": "Step Bonus",
+  "EMAIL": "Email"
 }

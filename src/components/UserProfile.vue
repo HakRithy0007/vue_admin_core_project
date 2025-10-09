@@ -1,40 +1,9 @@
-<script setup lang="ts">
-import { ref } from "vue"
-import { useRouter } from "vue-router"
-import { useI18n } from "vue-i18n"
-import avatar1 from "@images/avatars/avatar-1.png"
-
-const logoutDialog = ref(false)
-const profileDialog = ref(false)
-const changePass = ref(false)
-const router = useRouter()
-const { t } = useI18n()
-const username = ref("John Doe")
-const role = ref("Admin")
-const phone = ref("")
-const currentPassword = ref("")
-const newPassword = ref("")
-const confirmPassword = ref("")
-
-function handleLogout() {
-  logoutDialog.value = false
-  router.push("/login")
-}
-
-function handleChangePassword() {
-  currentPassword.value = ""
-  newPassword.value = ""
-  confirmPassword.value = ""
-  changePass.value = false
-}
-</script>
-
 <template>
   <VBadge dot location="bottom" offset-x="1" offset-y="2" color="success" bordered>
     <VAvatar class="cursor-pointer" color="primary" variant="tonal">
       <VImg :src="avatar1" />
 
-      <!-- SECTION Menu -->
+      <!-- SECTION MENU -->
       <VMenu activator="parent" width="260" location="bottom end" offset="14px">
         <VList class="px-6">
           <!-- 👉 User Avatar & Name -->
@@ -99,26 +68,46 @@ function handleChangePassword() {
         </span>
       </v-card-title>
 
+      <!-- Main Avatar -->
+      <div class="flex flex-col justify-center items-center pb-4">
+        <!-- Main avatar with spinning dotted border -->
+        <div class="avatar-border">
+          <img :src="selectedAvatar" alt="profile" class="h-16 w-16 rounded-full">
+        </div>
+
+        <!-- Avatar selection -->
+        <div class="flex gap-2 mt-4">
+          <img v-for="(avatar, index) in avatars" :key="index" :src="avatar"
+            :class="['h-12 w-12 rounded-full cursor-pointer border-2', selectedAvatar === avatar ? 'border-primary' : 'border-transparent']"
+            @click="selectedAvatar = avatar" />
+        </div>
+
+        <!-- Button choose -->
+        <v-btn variant="elevated" color="error" class="!mt-4 !w-[150px]" @click="logoutDialog = false">
+          Change Avatar
+        </v-btn>
+      </div>
+
       <VDivider />
 
       <v-card-text class="pt-6 pb-4">
         <div class="flex flex-col gap-4">
           <!-- Username -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold">{{ t("USERNAME") }}</label>
+            <label class="text-sm">{{ t("USERNAME") }}</label>
             <v-text-field v-model="username" variant="outlined" density="comfortable" readonly
               bg-color="grey-lighten-4" />
           </div>
 
           <!-- Role -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold">{{ t("ROLE") }}</label>
+            <label class="text-sm">{{ t("ROLE") }}</label>
             <v-text-field v-model="role" variant="outlined" density="comfortable" readonly bg-color="grey-lighten-4" />
           </div>
 
           <!-- Phone -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold">{{ t("PHONE") }}</label>
+            <label class="text-sm">{{ t("PHONE") }}</label>
             <v-text-field v-model="phone" variant="outlined" density="comfortable" readonly bg-color="grey-lighten-4" />
           </div>
         </div>
@@ -147,7 +136,7 @@ function handleChangePassword() {
         <div class="flex flex-col gap-4">
           <!-- Current Password -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold">{{ t("CURRENT_PASSWORD") }}</label>
+            <label class="text-sm">{{ t("CURRENT_PASSWORD") }}</label>
             <v-text-field v-model="currentPassword" type="password" variant="outlined" density="comfortable"
               :placeholder="t('ENTER_CURRENT_PASSWORD')" />
           </div>
@@ -211,3 +200,89 @@ function handleChangePassword() {
     </v-card>
   </v-dialog>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import { useI18n } from "vue-i18n"
+import avatar1 from "@images/avatars/avatar-1.png"
+
+const logoutDialog = ref(false)
+const profileDialog = ref(false)
+const changePass = ref(false)
+const router = useRouter()
+const { t } = useI18n()
+const username = ref("John Doe")
+const role = ref("Admin")
+const phone = ref("")
+const currentPassword = ref("")
+const newPassword = ref("")
+const confirmPassword = ref("")
+
+
+// Predefined avatars
+const avatars = [
+  '/src/assets/images/avatars/avatar-1.png',
+  '/src/assets/images/avatars/avatar-2.png',
+  '/src/assets/images/avatars/avatar-3.png',
+  '/src/assets/images/avatars/avatar-4.png',
+  '/src/assets/images/avatars/avatar-5.png',
+  '/src/assets/images/avatars/avatar-6.png'
+];
+
+// Selected avatar
+const selectedAvatar = ref(avatars[0]);
+
+
+
+function handleLogout() {
+  logoutDialog.value = false
+  router.push("/login")
+}
+
+function handleChangePassword() {
+  currentPassword.value = ""
+  newPassword.value = ""
+  confirmPassword.value = ""
+  changePass.value = false
+}
+</script>
+
+<style scoped>
+.avatar-border {
+  position: relative;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px dotted rgb(47, 255, 0);
+  animation: spin 10s linear infinite;
+  z-index: 1;
+}
+
+.avatar-border img {
+  position: relative;
+  z-index: 2;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

@@ -158,6 +158,9 @@ import coin5 from '@/assets/images/coins/coin5.svg?url';
 import coin6 from '@/assets/images/coins/coin6.svg?url';
 
 const { t } = useI18n()
+const colorOptions = ['Gold', 'Silver', 'Bronze', 'Copper', 'Platinum']
+const isDialogVisible = ref(false)
+const currentEditIndex = ref(-1)
 
 interface Coin {
     image: string
@@ -167,9 +170,6 @@ interface Coin {
     date: string
     icon: string
 }
-
-const isDialogVisible = ref(false)
-const currentEditIndex = ref(-1)
 
 const editForm = reactive({
     image: '',
@@ -194,8 +194,6 @@ const translatedCurrencyOptions = computed(() =>
         symbol: option.symbol
     }))
 )
-
-const colorOptions = ['Gold', 'Silver', 'Bronze', 'Copper', 'Platinum']
 
 const translatedColorOptions = computed(() =>
     colorOptions.map(color => ({

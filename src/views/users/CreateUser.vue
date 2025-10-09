@@ -6,24 +6,24 @@
       <VCard class="px-6">
         <div class="flex justify-center items-center gap-4">
 
-          <!-- Admin -->
+          <!-- All -->
           <v-checkbox :label="t('ALL')" :model-value="role === 'all'"
-            @update:model-value="val => role = val ? 'all' : ''" />
+            @update:model-value="val => handleRoleChange(val ? 'all' : '')" />
           <v-divider :thickness="2" vertical />
 
           <!-- Admin -->
           <v-checkbox :label="t('ADMIN')" :model-value="role === 'admin'"
-            @update:model-value="val => role = val ? 'admin' : ''" />
+            @update:model-value="val => handleRoleChange(val ? 'admin' : '')" />
           <v-divider :thickness="2" vertical />
 
           <!-- Moderator -->
           <v-checkbox :label="t('MODERATOR')" :model-value="role === 'moderator'"
-            @update:model-value="val => role = val ? 'moderator' : ''" />
+            @update:model-value="val => handleRoleChange(val ? 'moderator' : '')" />
           <v-divider :thickness="2" vertical />
 
           <!-- Operator -->
           <v-checkbox :label="t('OPERATOR')" :model-value="role === 'operator'"
-            @update:model-value="val => role = val ? 'operator' : ''" />
+            @update:model-value="val => handleRoleChange(val ? 'operator' : '')" />
         </div>
       </VCard>
     </div>
@@ -39,7 +39,7 @@
           </template>
 
           <v-list>
-            <v-list-item v-for="(item, index) in items" :key="index" @click="selected = item">
+            <v-list-item v-for="(item, index) in items" :key="index" @click="handleMobileRoleChange(item)">
               <v-list-item-title class="text-center">
                 {{ t(item.title) }}
               </v-list-item-title>
@@ -52,7 +52,7 @@
     <!-- Right Section -->
     <div class="right w-[50%] flex justify-end items-center">
       <VCol cols="5" class="hidden lg:block">
-        <VTextField :label="t('SEARCH_USERNAME')" type="text" />
+        <VTextField v-model="searchUsername" :label="t('SEARCH_USERNAME')" type="text" />
       </VCol>
 
       <VBtn type="button" class="!h-[48px] bg-warning flex justify-center items-center" @click="dialog = true">
@@ -78,24 +78,62 @@
 
 <script setup lang="ts">
 import { Icon } from "@iconify/vue"
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Anchor } from 'vuetify'
 import { useI18n } from 'vue-i18n'
-const role = ref("")
+
 const { t } = useI18n()
 
+// Props
+interface Props {
+  onSearchChange?: (search: string) => void
+  onRoleChange?: (role: string) => void
+}
+
+const props = defineProps<Props>()
+
+// State
+const role = ref("all")
+const searchUsername = ref('')
+const debounceTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const location = ref<Anchor>('right')
 const dialog = ref(false)
 
 interface Item {
   title: string
+  value: string
 }
 
 const items = ref<Item[]>([
-  { title: 'ADMIN' },
-  { title: 'MODERATOR' },
-  { title: 'OPERATOR' },
+  { title: 'ALL', value: 'all' },
+  { title: 'ADMIN', value: 'admin' },
+  { title: 'MODERATOR', value: 'moderator' },
+  { title: 'OPERATOR', value: 'operator' },
 ])
 
 const selected = ref<Item>(items.value[0])
+
+// Handle role change
+const handleRoleChange = (newRole: string) => {
+  role.value = newRole
+  props.onRoleChange?.(newRole)
+}
+
+// Handle mobile role change
+const handleMobileRoleChange = (item: Item) => {
+  selected.value = item
+  role.value = item.value
+  props.onRoleChange?.(item.value)
+}
+
+// Watch search input with debounce
+watch(searchUsername, (newValue) => {
+  if (debounceTimeout.value !== null) {
+    clearTimeout(debounceTimeout.value)
+  }
+
+  debounceTimeout.value = setTimeout(() => {
+    props.onSearchChange?.(newValue)
+  }, 500)
+})
 </script>
