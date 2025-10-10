@@ -61,19 +61,7 @@
     </div>
   </div>
 
-  <!-- Dialog -->
-  <v-dialog v-model="dialog" max-width="500" opacity="0.7">
-    <v-card :title="t('ADD_NEW_USER')">
-      <v-card-text>
-        {{ t('FORM_PLACEHOLDER') }}
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text @click="dialog = false">{{ t('CLOSE') }}</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <AddUserDialog v-model="dialog" @submit="handleCreateUser" @close="dialog = false" />
 </template>
 
 <script setup lang="ts">
@@ -81,7 +69,7 @@ import { Icon } from "@iconify/vue"
 import { ref, watch } from 'vue'
 import type { Anchor } from 'vuetify'
 import { useI18n } from 'vue-i18n'
-
+import AddUserDialog from '@/views/users/AddUser.vue'
 const { t } = useI18n()
 
 // Props
@@ -136,4 +124,19 @@ watch(searchUsername, (newValue) => {
     props.onSearchChange?.(newValue)
   }, 500)
 })
+
+const handleCreateUser = async (userData: any) => {
+  try {
+    console.log('Creating user:', userData)
+
+    // Show success message
+    // You can use a toast/snackbar here
+
+    // Refresh the user list
+    // props.onUserCreated?.()
+  } catch (error) {
+    console.error('Failed to create user:', error)
+    // Show error message
+  }
+}
 </script>

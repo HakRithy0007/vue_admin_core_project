@@ -1,13 +1,9 @@
 <template>
     <VCard>
-
-
         <VDataTable :headers="headers" :items="userData" item-value="id" :items-per-page="itemsPerPage"
             :items-per-page-text="t('ITEMS_PER_PAGE')" :items-per-page-all-text="t('ALL')"
             class="text-no-wrap custom-data-table user-table" @update:items-per-page="handleItemsPerPageChange"
             @update:page="handlePageChange" :items-length="totalItems" :page="currentPage" :loading="loading">
-
-            <!-- <VProgressLinear v-if="loading" indeterminate color="primary" /> -->
 
             <!-- Firstname -->
             <template #item.first_name="{ item }">{{ item.first_name }}</template>
@@ -88,7 +84,8 @@
         </VDataTable>
 
         <!-- Edit Dialog -->
-        <EditUserDialog v-model="dialogVisible" :user="selectedUser" @close="closeEditDialog" />
+        <EditUserDialog v-model="dialogVisible" :user="selectedUser" @close="closeEditDialog"
+            @success="handleEditSuccess" />
 
         <!-- View Audit Dialog -->
         <v-dialog v-model="viewDialogVisible" max-width="600" opacity="0.7">
@@ -150,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, watch } from "vue"
 import { Icon } from "@iconify/vue"
 import EditUserDialog from "@/views/users/EditUser.vue"
 import { useI18n } from 'vue-i18n'
@@ -239,18 +236,52 @@ const calculateRoleCounts = async () => {
 const loadUsers = async () => {
     loading.value = true
     try {
-        const params: { pagingOptions: PagingOptions; filters?: FilterOptions[]; sort?: SortOptions } = {
+
+        // Build params object - adjust based on your actual API structure
+        const params: any = {
             pagingOptions: { page: currentPage.value, per_page: itemsPerPage.value },
         }
-        const response = await fetchUsers(params)
 
+        // Add search parameter if exists
+        if (props.searchQuery && props.searchQuery.trim() !== '') {
+
+            // Option 1: If your API expects 'search' parameter
+            params.search = props.searchQuery.trim()
+
+            // OR Option 2: If your API expects it in filters array, uncomment below:
+            // params.filters = params.filters || []
+            // params.filters.push({
+            //     field: 'user_name',
+            //     operator: 'contains',
+            //     value: props.searchQuery.trim()
+            // })
+        }
+
+        // Add role filter if not 'all'
+        if (props.roleFilter && props.roleFilter !== 'all') {
+            const roleIdMap: Record<string, number> = {
+                'admin': 1,
+                'moderator': 2,
+                'operator': 3
+            }
+
+            const roleId = roleIdMap[props.roleFilter]
+            if (roleId) {
+                params.filters = params.filters || []
+                params.filters.push({
+                    field: 'role_id',
+                    operator: 'equals',
+                    value: roleId
+                })
+            }
+        }
+
+        const response = await fetchUsers(params)
         userData.value = response.data
         totalItems.value = response.total
-
-        // Calculate role counts from all users
         const roleCounts = await calculateRoleCounts()
 
-        // Send stats to parent component
+        // Send stats to parent component​
         props.onStatsUpdate?.({
             totalUsers: totalItems.value,
             totalAdmin: roleCounts.admin,
@@ -323,9 +354,15 @@ const openEditDialog = (user: User) => {
     selectedUser.value = { ...user }
     dialogVisible.value = true
 }
+
 const closeEditDialog = () => {
     dialogVisible.value = false
     selectedUser.value = null
+}
+
+// Handle successful edit - refetch data
+const handleEditSuccess = () => {
+    loadUsers()
 }
 
 const openViewDialog = (user: User) => {
@@ -340,6 +377,12 @@ const deleteUser = (user: User) => {
 
 // Fetch users on mount
 onMounted(() => loadUsers())
+
+// Watch for search and role filter changes
+watch(() => [props.searchQuery, props.roleFilter], () => {
+    currentPage.value = 1 // Reset to first page on filter change
+    loadUsers()
+}, { deep: true })
 </script>
 
 <style scoped>
@@ -351,7 +394,7 @@ onMounted(() => loadUsers())
     text-align: center !important;
 }
 
-.custom-data-table :deep(.v-data-table__wrapper),
+.custom-data-table :deep(.v-table__wrapper),
 .custom-data-table :deep(.v-table__wrapper) {
     overflow-x: auto;
     -ms-overflow-style: none;

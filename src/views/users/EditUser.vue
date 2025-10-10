@@ -9,51 +9,51 @@
 
             <VDivider />
 
-            <!-- ADD LOADING BAR -->
+            <!-- Loading Bar -->
             <VProgressLinear v-if="isLoading" indeterminate color="primary" />
 
             <!-- Dialog Content -->
             <VCardText class="pa-6">
                 <VForm @submit.prevent="handleSave">
                     <VRow>
-                        <!-- First Name -->
+
                         <VCol cols="12" md="6">
                             <VTextField v-model="formData.first_name" :label="t('FIRST_NAME')"
-                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable" required />
+                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable"
+                                :rules="rules.firstName"
+                                @input="formData.first_name = formData.first_name.toUpperCase()" required />
                         </VCol>
 
-                        <!-- Last Name -->
                         <VCol cols="12" md="6">
                             <VTextField v-model="formData.last_name" :label="t('LAST_NAME')"
-                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable" required />
+                                prepend-inner-icon="mdi:account" variant="outlined" density="comfortable"
+                                :rules="rules.lastName" @input="formData.last_name = formData.last_name.toUpperCase()"
+                                required />
                         </VCol>
 
-                        <!-- Username -->
                         <VCol cols="12" md="6">
                             <VTextField v-model="formData.user_name" :label="t('USERNAME')" prepend-inner-icon="mdi:at"
-                                variant="outlined" density="comfortable" required />
+                                variant="outlined" density="comfortable" :rules="rules.username"
+                                @input="formData.user_name = formData.user_name.toUpperCase()" required />
                         </VCol>
 
-                        <!-- Email -->
                         <VCol cols="12" md="6">
                             <VTextField v-model="formData.email" :label="t('EMAIL')" prepend-inner-icon="mdi:at"
-                                variant="outlined" density="comfortable" required />
+                                variant="outlined" density="comfortable" :rules="rules.email" required />
                         </VCol>
 
-                        <!-- Phone -->
+
                         <VCol cols="12" md="6">
                             <VTextField v-model="formData.phone" :label="t('PHONE')" prepend-inner-icon="mdi:phone"
-                                variant="outlined" density="comfortable" required />
+                                variant="outlined" density="comfortable" :rules="rules.phone" required />
                         </VCol>
 
-                        <!-- Role -->
                         <VCol cols="12" md="6">
-                            <VSelect v-model="formData.user_role_name" :items="roleOptions" item-title="title"
+                            <VSelect v-model="formData.role_id" :items="roleOptions" item-title="title"
                                 item-value="value" :label="t('ROLE')" prepend-inner-icon="mdi:account-group"
                                 variant="outlined" density="comfortable" required />
                         </VCol>
 
-                        <!-- Status -->
                         <VCol cols="12" md="6">
                             <VSelect v-model="formData.status_id" :items="statusOptions" item-title="title"
                                 item-value="value" :label="t('STATUS')" prepend-inner-icon="mdi:package-variant"
@@ -65,7 +65,7 @@
 
             <VDivider />
 
-            <!-- Dialog Actions -->
+            <!-- Actions -->
             <VCardActions class="pa-4">
                 <VSpacer />
                 <VBtn variant="outlined" color="error" @click="handleCancel" class="!w-20 !border-2"
@@ -85,7 +85,8 @@
 import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { User } from '@/types/user_type'
-import { updateUser } from '@/services/user'
+import { updateUser, getFormUpdate } from '@/services/user'
+
 const { t } = useI18n()
 
 // Props
@@ -94,7 +95,6 @@ interface Props {
     user: User | null
 }
 const props = defineProps<Props>()
-const isLoading = ref(false)
 
 // Emits
 interface Emits {
@@ -105,20 +105,48 @@ interface Emits {
 }
 const emit = defineEmits<Emits>()
 
-// Options
+const isLoading = ref(false)
+
+// Role & Status options - using role_id as value
 const roleOptions = computed(() => [
-    { title: t('ADMIN'), value: 'Admin' },
-    { title: t('MODERATOR'), value: 'Moderator' },
-    { title: t('OPERATOR'), value: 'Operator' },
+    { title: t('ADMIN'), value: 1 },
+    { title: t('MODERATOR'), value: 2 },
+    { title: t('OPERATOR'), value: 3 },
 ])
 
 const statusOptions = computed(() => [
     { title: t('ACTIVE'), value: 1 },
     { title: t('INACTIVE'), value: 2 },
-    { title: t('PENDING'), value: 3 },
+    { title: t('SUSPEND'), value: 3 },
 ])
 
-// Default user
+const rules = {
+    firstName: [
+        (v: string) => !!v || t('REQUIRED'),
+        (v: string) => /^[A-Za-z]+$/.test(v) || t('ONLY_LETTERS'),
+    ],
+    lastName: [
+        (v: string) => !!v || t('REQUIRED'),
+        (v: string) => /^[A-Za-z]+$/.test(v) || t('ONLY_LETTERS'),
+    ],
+    username: [
+        (v: string) => !!v || t('REQUIRED'),
+        (v: string) => /^[A-Za-z0-9_]+$/.test(v) || t('INVALID_USERNAME'),
+    ],
+    email: [
+        (v: string) => !!v || t('REQUIRED'),
+        (v: string) =>
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || t('INVALID_EMAIL'),
+    ],
+    phone: [
+        (v: string) => !!v || t('REQUIRED'),
+        (v: string) =>
+            /^[0-9]{7,15}$/.test(v) || t('INVALID_PHONE'),
+    ],
+}
+
+
+// Default User
 const defaultUser = (): User => ({
     id: '',
     first_name: '',
@@ -130,22 +158,13 @@ const defaultUser = (): User => ({
     created_at: new Date().toISOString(),
     created_by: 0,
     role_id: 1,
-    user_role_name: roleOptions.value[0].value,
+    user_role_name: 'Admin',
     operator: '',
 })
 
 const formData = ref<User>(defaultUser())
 
-// Normalize role/status values
-function normalizeRoleValue(val?: string | null): string {
-    if (!val) return roleOptions.value[0].value
-    const lower = val.toLowerCase()
-    const found = roleOptions.value.find(
-        it => it.value.toLowerCase() === lower || it.title.toLowerCase() === lower
-    )
-    return found ? found.value : roleOptions.value[0].value
-}
-
+// Helpers
 function normalizeStatusValue(val?: number | string | null): number {
     if (val === null || val === undefined) return statusOptions.value[0].value
     const numVal = typeof val === 'string' ? parseInt(val) : val
@@ -156,40 +175,58 @@ function normalizeStatusValue(val?: number | string | null): number {
 // Dialog v-model
 const dialogModel = computed({
     get: () => props.modelValue,
-    set: (value: boolean) => emit('update:modelValue', value)
+    set: (value: boolean) => emit('update:modelValue', value),
 })
 
-// WATCH
+// ✅ Load form data from backend when dialog opens
 watch(
-    () => props.user,
-    (newUser) => {
-        if (newUser) {
-            formData.value = {
-                ...newUser,
-                user_role_name: normalizeRoleValue(newUser.user_role_name),
-                status_id: normalizeStatusValue(newUser.status_id),
+    [() => props.modelValue, () => props.user],
+    async ([isOpen, user]) => {
+        if (isOpen && user?.id) {
+            isLoading.value = true
+            try {
+                const response = await getFormUpdate(user.id)
+
+                // Transform API response to match User type
+                const userData = response.users?.[0]
+                if (userData) {
+                    formData.value = {
+                        id: user.id,
+                        first_name: userData.first_name,
+                        last_name: userData.last_name,
+                        user_name: userData.user_name,
+                        email: userData.email,
+                        phone: userData.phone_number,
+                        role_id: userData.role_id,
+                        status_id: normalizeStatusValue(userData.status_id),
+                        user_role_name: userData.roles?.[0]?.user_role_name || 'Admin',
+                        created_at: user.created_at,
+                        created_by: user.created_by,
+                        operator: user.operator || '',
+                    }
+                } else {
+                    throw new Error('No user data returned')
+                }
+            } catch (error) {
+                console.error('Failed to load form data:', error)
+                // Fallback to props.user if API fails
+                formData.value = {
+                    ...user,
+                    status_id: normalizeStatusValue(user.status_id),
+                }
+            } finally {
+                isLoading.value = false
             }
-        } else {
+        } else if (!isOpen) {
             formData.value = defaultUser()
         }
     },
     { immediate: true }
 )
 
-// WATCH
-watch(
-    () => dialogModel.value,
-    (open) => {
-        if (open && !props.user) formData.value = defaultUser()
-    }
-)
-
-// REPLACE handleSave with this:
+// ✅ Save - sends role_id as number
 const handleSave = async () => {
-    if (!formData.value.id) {
-        return
-    }
-
+    if (!formData.value.id) return
     isLoading.value = true
     try {
         await updateUser(formData.value.id, {

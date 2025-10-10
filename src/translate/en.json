@@ -130,5 +130,6 @@
   "STEP_CONFIGURATION": "Step Configuration",
   "STEP_UNIT": "Step Unit",
   "STEP_BONUS": "Step Bonus",
-  "EMAIL": "Email"
+  "EMAIL": "Email",
+  "SUSPEND": "Suspend"
 }

@@ -1,16 +1,27 @@
 <template>
     <VRow class="match-height">
         <VCol cols="12">
-            <TopContentUser :total-users="userStats.totalUsers" :total-admin="userStats.totalAdmin"
-                :total-moderator="userStats.totalModerator" :total-operator="userStats.totalOperator" />
+            <TopContentUser 
+                :total-users="userStats.totalUsers"
+                :total-admin="userStats.totalAdmin"
+                :total-moderator="userStats.totalModerator"
+                :total-operator="userStats.totalOperator"
+            />
         </VCol>
 
         <VCol cols="12">
-            <CreateUser :on-search-change="handleSearchChange" :on-role-change="handleRoleChange" />
+            <CreateUser 
+                :on-search-change="handleSearchChange"
+                :on-role-change="handleRoleChange"
+            />
         </VCol>
 
         <VCol cols="12">
-            <UserTable :on-stats-update="handleStatsUpdate" :search-query="searchQuery" :role-filter="roleFilter" />
+            <UserTable 
+                :on-stats-update="handleStatsUpdate"
+                :search-query="searchQuery"
+                :role-filter="roleFilter"
+            />
         </VCol>
     </VRow>
 </template>
