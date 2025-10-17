@@ -84,8 +84,7 @@
         </VDataTable>
 
         <!-- Edit Dialog -->
-        <EditUserDialog v-model="dialogVisible" :user="selectedUser" @close="closeEditDialog"
-            @success="handleEditSuccess" />
+        <EditUserDialog v-model="dialogVisible" :user="selectedUser" @close="closeEditDialog" @success="handleEditSuccess" />
 
         <!-- View Audit Dialog -->
         <v-dialog v-model="viewDialogVisible" max-width="600" opacity="0.7">

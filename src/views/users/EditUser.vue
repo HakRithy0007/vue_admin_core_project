@@ -127,7 +127,7 @@ const rules = {
     ],
     lastName: [
         (v: string) => !!v || t('REQUIRED'),
-        (v: string) => /^[A-Za-z]+$/.test(v) || t('ONLY_LETTERS'),
+        (v: string) => /^[A-Za-z0-9_]+$/.test(v) || t('INVALID_LASTNAME'),
     ],
     username: [
         (v: string) => !!v || t('REQUIRED'),
